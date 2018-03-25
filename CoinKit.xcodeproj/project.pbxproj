@@ -10,6 +10,25 @@
 		4F1D9D33206818BC0065E3EF /* CoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D29206818BC0065E3EF /* CoinKit.framework */; };
 		4F1D9D38206818BC0065E3EF /* CoinKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D37206818BC0065E3EF /* CoinKitTests.swift */; };
 		4F1D9D3A206818BC0065E3EF /* CoinKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1D9D2C206818BC0065E3EF /* CoinKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F1D9D5B206819500065E3EF /* Data+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D4A206819500065E3EF /* Data+Hex.swift */; };
+		4F1D9D5C206819500065E3EF /* String+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D4B206819500065E3EF /* String+Hex.swift */; };
+		4F1D9D5D206819500065E3EF /* chinese_traditional.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D4D206819500065E3EF /* chinese_traditional.txt */; };
+		4F1D9D5E206819500065E3EF /* japanese.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D4E206819500065E3EF /* japanese.txt */; };
+		4F1D9D5F206819500065E3EF /* french.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D4F206819500065E3EF /* french.txt */; };
+		4F1D9D60206819500065E3EF /* Wordlists.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D50206819500065E3EF /* Wordlists.xcassets */; };
+		4F1D9D61206819500065E3EF /* chinese_simplified.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D51206819500065E3EF /* chinese_simplified.txt */; };
+		4F1D9D62206819500065E3EF /* english.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D52206819500065E3EF /* english.txt */; };
+		4F1D9D63206819500065E3EF /* spanish.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D53206819500065E3EF /* spanish.txt */; };
+		4F1D9D64206819500065E3EF /* italian.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D54206819500065E3EF /* italian.txt */; };
+		4F1D9D65206819500065E3EF /* korean.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D9D55206819500065E3EF /* korean.txt */; };
+		4F1D9D66206819500065E3EF /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D57206819500065E3EF /* WordList.swift */; };
+		4F1D9D67206819500065E3EF /* RandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D58206819500065E3EF /* RandomNumberGenerator.swift */; };
+		4F1D9D68206819500065E3EF /* Mnemonic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D59206819500065E3EF /* Mnemonic.swift */; };
+		4F1D9D69206819500065E3EF /* Binary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D5A206819500065E3EF /* Binary.swift */; };
+		4F1D9D70206819D50065E3EF /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6C206819D40065E3EF /* Crypto.framework */; };
+		4F1D9D73206819D50065E3EF /* CommonCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6F206819D50065E3EF /* CommonCrypto.framework */; };
+		4F1D9D74206819D80065E3EF /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6D206819D40065E3EF /* Nimble.framework */; };
+		4F1D9D75206819D80065E3EF /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6E206819D50065E3EF /* Quick.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +48,25 @@
 		4F1D9D32206818BC0065E3EF /* CoinKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoinKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1D9D37206818BC0065E3EF /* CoinKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinKitTests.swift; sourceTree = "<group>"; };
 		4F1D9D39206818BC0065E3EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F1D9D4A206819500065E3EF /* Data+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Hex.swift"; sourceTree = "<group>"; };
+		4F1D9D4B206819500065E3EF /* String+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Hex.swift"; sourceTree = "<group>"; };
+		4F1D9D4D206819500065E3EF /* chinese_traditional.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = chinese_traditional.txt; sourceTree = "<group>"; };
+		4F1D9D4E206819500065E3EF /* japanese.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = japanese.txt; sourceTree = "<group>"; };
+		4F1D9D4F206819500065E3EF /* french.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = french.txt; sourceTree = "<group>"; };
+		4F1D9D50206819500065E3EF /* Wordlists.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Wordlists.xcassets; sourceTree = "<group>"; };
+		4F1D9D51206819500065E3EF /* chinese_simplified.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = chinese_simplified.txt; sourceTree = "<group>"; };
+		4F1D9D52206819500065E3EF /* english.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english.txt; sourceTree = "<group>"; };
+		4F1D9D53206819500065E3EF /* spanish.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spanish.txt; sourceTree = "<group>"; };
+		4F1D9D54206819500065E3EF /* italian.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = italian.txt; sourceTree = "<group>"; };
+		4F1D9D55206819500065E3EF /* korean.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = korean.txt; sourceTree = "<group>"; };
+		4F1D9D57206819500065E3EF /* WordList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
+		4F1D9D58206819500065E3EF /* RandomNumberGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomNumberGenerator.swift; sourceTree = "<group>"; };
+		4F1D9D59206819500065E3EF /* Mnemonic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mnemonic.swift; sourceTree = "<group>"; };
+		4F1D9D5A206819500065E3EF /* Binary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Binary.swift; sourceTree = "<group>"; };
+		4F1D9D6C206819D40065E3EF /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = Carthage/Build/iOS/Crypto.framework; sourceTree = "<group>"; };
+		4F1D9D6D206819D40065E3EF /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		4F1D9D6E206819D50065E3EF /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		4F1D9D6F206819D50065E3EF /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +74,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F1D9D73206819D50065E3EF /* CommonCrypto.framework in Frameworks */,
+				4F1D9D70206819D50065E3EF /* Crypto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +84,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F1D9D33206818BC0065E3EF /* CoinKit.framework in Frameworks */,
+				4F1D9D74206819D80065E3EF /* Nimble.framework in Frameworks */,
+				4F1D9D75206819D80065E3EF /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +97,7 @@
 			children = (
 				4F1D9D2B206818BC0065E3EF /* CoinKit */,
 				4F1D9D36206818BC0065E3EF /* CoinKitTests */,
+				4F1D9D6B206819C20065E3EF /* Frameworks */,
 				4F1D9D2A206818BC0065E3EF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -71,6 +114,9 @@
 		4F1D9D2B206818BC0065E3EF /* CoinKit */ = {
 			isa = PBXGroup;
 			children = (
+				4F1D9D49206819500065E3EF /* Extensions */,
+				4F1D9D56206819500065E3EF /* Models */,
+				4F1D9D4C206819500065E3EF /* Wordlists */,
 				4F1D9D2C206818BC0065E3EF /* CoinKit.h */,
 				4F1D9D2D206818BC0065E3EF /* Info.plist */,
 			);
@@ -84,6 +130,53 @@
 				4F1D9D39206818BC0065E3EF /* Info.plist */,
 			);
 			path = CoinKitTests;
+			sourceTree = "<group>";
+		};
+		4F1D9D49206819500065E3EF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4F1D9D4A206819500065E3EF /* Data+Hex.swift */,
+				4F1D9D4B206819500065E3EF /* String+Hex.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4F1D9D4C206819500065E3EF /* Wordlists */ = {
+			isa = PBXGroup;
+			children = (
+				4F1D9D4D206819500065E3EF /* chinese_traditional.txt */,
+				4F1D9D4E206819500065E3EF /* japanese.txt */,
+				4F1D9D4F206819500065E3EF /* french.txt */,
+				4F1D9D50206819500065E3EF /* Wordlists.xcassets */,
+				4F1D9D51206819500065E3EF /* chinese_simplified.txt */,
+				4F1D9D52206819500065E3EF /* english.txt */,
+				4F1D9D53206819500065E3EF /* spanish.txt */,
+				4F1D9D54206819500065E3EF /* italian.txt */,
+				4F1D9D55206819500065E3EF /* korean.txt */,
+			);
+			path = Wordlists;
+			sourceTree = "<group>";
+		};
+		4F1D9D56206819500065E3EF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4F1D9D57206819500065E3EF /* WordList.swift */,
+				4F1D9D58206819500065E3EF /* RandomNumberGenerator.swift */,
+				4F1D9D59206819500065E3EF /* Mnemonic.swift */,
+				4F1D9D5A206819500065E3EF /* Binary.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4F1D9D6B206819C20065E3EF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F1D9D6F206819D50065E3EF /* CommonCrypto.framework */,
+				4F1D9D6C206819D40065E3EF /* Crypto.framework */,
+				4F1D9D6D206819D40065E3EF /* Nimble.framework */,
+				4F1D9D6E206819D50065E3EF /* Quick.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,6 +272,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F1D9D63206819500065E3EF /* spanish.txt in Resources */,
+				4F1D9D5D206819500065E3EF /* chinese_traditional.txt in Resources */,
+				4F1D9D60206819500065E3EF /* Wordlists.xcassets in Resources */,
+				4F1D9D64206819500065E3EF /* italian.txt in Resources */,
+				4F1D9D65206819500065E3EF /* korean.txt in Resources */,
+				4F1D9D5E206819500065E3EF /* japanese.txt in Resources */,
+				4F1D9D62206819500065E3EF /* english.txt in Resources */,
+				4F1D9D5F206819500065E3EF /* french.txt in Resources */,
+				4F1D9D61206819500065E3EF /* chinese_simplified.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +298,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F1D9D5C206819500065E3EF /* String+Hex.swift in Sources */,
+				4F1D9D5B206819500065E3EF /* Data+Hex.swift in Sources */,
+				4F1D9D66206819500065E3EF /* WordList.swift in Sources */,
+				4F1D9D67206819500065E3EF /* RandomNumberGenerator.swift in Sources */,
+				4F1D9D69206819500065E3EF /* Binary.swift in Sources */,
+				4F1D9D68206819500065E3EF /* Mnemonic.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +449,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = CoinKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -362,6 +474,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = CoinKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -376,10 +492,15 @@
 		4F1D9D41206818BC0065E3EF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8S4N3E7VRA;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = CoinKitTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(PROJECT_DIR)/Carthage/Build/iOS";
 				PRODUCT_BUNDLE_IDENTIFIER = com.elliottminns.CoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -390,10 +511,15 @@
 		4F1D9D42206818BC0065E3EF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8S4N3E7VRA;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = CoinKitTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(PROJECT_DIR)/Carthage/Build/iOS";
 				PRODUCT_BUNDLE_IDENTIFIER = com.elliottminns.CoinKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
