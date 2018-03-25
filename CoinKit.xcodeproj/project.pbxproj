@@ -29,6 +29,7 @@
 		4F1D9D73206819D50065E3EF /* CommonCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6F206819D50065E3EF /* CommonCrypto.framework */; };
 		4F1D9D74206819D80065E3EF /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6D206819D40065E3EF /* Nimble.framework */; };
 		4F1D9D75206819D80065E3EF /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6E206819D50065E3EF /* Quick.framework */; };
+		4F1D9D7820681BA30065E3EF /* HDNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D7720681BA30065E3EF /* HDNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		4F1D9D6D206819D40065E3EF /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		4F1D9D6E206819D50065E3EF /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		4F1D9D6F206819D50065E3EF /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
+		4F1D9D7720681BA30065E3EF /* HDNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 		4F1D9D2B206818BC0065E3EF /* CoinKit */ = {
 			isa = PBXGroup;
 			children = (
+				4F1D9D7620681B270065E3EF /* Generators */,
 				4F1D9D49206819500065E3EF /* Extensions */,
 				4F1D9D56206819500065E3EF /* Models */,
 				4F1D9D4C206819500065E3EF /* Wordlists */,
@@ -160,10 +163,10 @@
 		4F1D9D56206819500065E3EF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				4F1D9D57206819500065E3EF /* WordList.swift */,
-				4F1D9D58206819500065E3EF /* RandomNumberGenerator.swift */,
-				4F1D9D59206819500065E3EF /* Mnemonic.swift */,
 				4F1D9D5A206819500065E3EF /* Binary.swift */,
+				4F1D9D59206819500065E3EF /* Mnemonic.swift */,
+				4F1D9D57206819500065E3EF /* WordList.swift */,
+				4F1D9D7720681BA30065E3EF /* HDNode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -177,6 +180,14 @@
 				4F1D9D6E206819D50065E3EF /* Quick.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4F1D9D7620681B270065E3EF /* Generators */ = {
+			isa = PBXGroup;
+			children = (
+				4F1D9D58206819500065E3EF /* RandomNumberGenerator.swift */,
+			);
+			path = Generators;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -302,6 +313,7 @@
 				4F1D9D5B206819500065E3EF /* Data+Hex.swift in Sources */,
 				4F1D9D66206819500065E3EF /* WordList.swift in Sources */,
 				4F1D9D67206819500065E3EF /* RandomNumberGenerator.swift in Sources */,
+				4F1D9D7820681BA30065E3EF /* HDNode.swift in Sources */,
 				4F1D9D69206819500065E3EF /* Binary.swift in Sources */,
 				4F1D9D68206819500065E3EF /* Mnemonic.swift in Sources */,
 			);
