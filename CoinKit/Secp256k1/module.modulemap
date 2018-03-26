@@ -1,0 +1,4 @@
+module Secp256k1 [system] {
+  header "../../Frameworks/secp256k1.framework/Headers/secp256k1.h"
+  export *
+}

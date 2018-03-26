@@ -30,6 +30,15 @@
 		4F1D9D74206819D80065E3EF /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6D206819D40065E3EF /* Nimble.framework */; };
 		4F1D9D75206819D80065E3EF /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1D9D6E206819D50065E3EF /* Quick.framework */; };
 		4F1D9D7820681BA30065E3EF /* HDNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D7720681BA30065E3EF /* HDNode.swift */; };
+		4F1D9D7A20681DA50065E3EF /* ECPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D7920681DA50065E3EF /* ECPair.swift */; };
+		4F1D9D7C2068A2C90065E3EF /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D9D7B2068A2C90065E3EF /* Network.swift */; };
+		4F2CAB772069329E0016B62F /* secp256k1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2CAB762069329E0016B62F /* secp256k1.framework */; };
+		4F2CAB7F206938DD0016B62F /* Secp256k1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB7E206938DD0016B62F /* Secp256k1.swift */; };
+		4F2CAB82206943C70016B62F /* MnemonicSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB81206943C70016B62F /* MnemonicSpec.swift */; };
+		4F2CAB84206943D10016B62F /* ECPairSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB83206943D10016B62F /* ECPairSpec.swift */; };
+		4F2CAB8720694DEC0016B62F /* Ripemd160.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8620694DEC0016B62F /* Ripemd160.swift */; };
+		4F2CAB8920694E5D0016B62F /* Ripemd160+Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8820694E5D0016B62F /* Ripemd160+Hash.swift */; };
+		4F2CAB8B206950480016B62F /* Base58.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8A206950480016B62F /* Base58.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +78,16 @@
 		4F1D9D6E206819D50065E3EF /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		4F1D9D6F206819D50065E3EF /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
 		4F1D9D7720681BA30065E3EF /* HDNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDNode.swift; sourceTree = "<group>"; };
+		4F1D9D7920681DA50065E3EF /* ECPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECPair.swift; sourceTree = "<group>"; };
+		4F1D9D7B2068A2C90065E3EF /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		4F2CAB762069329E0016B62F /* secp256k1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = secp256k1.framework; path = Frameworks/secp256k1.framework; sourceTree = "<group>"; };
+		4F2CAB7D206934540016B62F /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		4F2CAB7E206938DD0016B62F /* Secp256k1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secp256k1.swift; sourceTree = "<group>"; };
+		4F2CAB81206943C70016B62F /* MnemonicSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MnemonicSpec.swift; sourceTree = "<group>"; };
+		4F2CAB83206943D10016B62F /* ECPairSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECPairSpec.swift; sourceTree = "<group>"; };
+		4F2CAB8620694DEC0016B62F /* Ripemd160.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ripemd160.swift; sourceTree = "<group>"; };
+		4F2CAB8820694E5D0016B62F /* Ripemd160+Hash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ripemd160+Hash.swift"; sourceTree = "<group>"; };
+		4F2CAB8A206950480016B62F /* Base58.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +96,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F1D9D73206819D50065E3EF /* CommonCrypto.framework in Frameworks */,
+				4F2CAB772069329E0016B62F /* secp256k1.framework in Frameworks */,
 				4F1D9D70206819D50065E3EF /* Crypto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,6 +136,8 @@
 		4F1D9D2B206818BC0065E3EF /* CoinKit */ = {
 			isa = PBXGroup;
 			children = (
+				4F2CAB8520694DD90016B62F /* Cryptography */,
+				4F2CAB7C206934350016B62F /* Secp256k1 */,
 				4F1D9D7620681B270065E3EF /* Generators */,
 				4F1D9D49206819500065E3EF /* Extensions */,
 				4F1D9D56206819500065E3EF /* Models */,
@@ -129,6 +151,7 @@
 		4F1D9D36206818BC0065E3EF /* CoinKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				4F2CAB80206943C70016B62F /* Models */,
 				4F1D9D37206818BC0065E3EF /* CoinKitTests.swift */,
 				4F1D9D39206818BC0065E3EF /* Info.plist */,
 			);
@@ -140,6 +163,7 @@
 			children = (
 				4F1D9D4A206819500065E3EF /* Data+Hex.swift */,
 				4F1D9D4B206819500065E3EF /* String+Hex.swift */,
+				4F2CAB8820694E5D0016B62F /* Ripemd160+Hash.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -167,6 +191,8 @@
 				4F1D9D59206819500065E3EF /* Mnemonic.swift */,
 				4F1D9D57206819500065E3EF /* WordList.swift */,
 				4F1D9D7720681BA30065E3EF /* HDNode.swift */,
+				4F1D9D7920681DA50065E3EF /* ECPair.swift */,
+				4F1D9D7B2068A2C90065E3EF /* Network.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -174,6 +200,7 @@
 		4F1D9D6B206819C20065E3EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F2CAB762069329E0016B62F /* secp256k1.framework */,
 				4F1D9D6F206819D50065E3EF /* CommonCrypto.framework */,
 				4F1D9D6C206819D40065E3EF /* Crypto.framework */,
 				4F1D9D6D206819D40065E3EF /* Nimble.framework */,
@@ -188,6 +215,33 @@
 				4F1D9D58206819500065E3EF /* RandomNumberGenerator.swift */,
 			);
 			path = Generators;
+			sourceTree = "<group>";
+		};
+		4F2CAB7C206934350016B62F /* Secp256k1 */ = {
+			isa = PBXGroup;
+			children = (
+				4F2CAB7D206934540016B62F /* module.modulemap */,
+			);
+			path = Secp256k1;
+			sourceTree = "<group>";
+		};
+		4F2CAB80206943C70016B62F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4F2CAB81206943C70016B62F /* MnemonicSpec.swift */,
+				4F2CAB83206943D10016B62F /* ECPairSpec.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4F2CAB8520694DD90016B62F /* Cryptography */ = {
+			isa = PBXGroup;
+			children = (
+				4F2CAB7E206938DD0016B62F /* Secp256k1.swift */,
+				4F2CAB8620694DEC0016B62F /* Ripemd160.swift */,
+				4F2CAB8A206950480016B62F /* Base58.swift */,
+			);
+			path = Cryptography;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,11 +365,17 @@
 			files = (
 				4F1D9D5C206819500065E3EF /* String+Hex.swift in Sources */,
 				4F1D9D5B206819500065E3EF /* Data+Hex.swift in Sources */,
+				4F2CAB8920694E5D0016B62F /* Ripemd160+Hash.swift in Sources */,
 				4F1D9D66206819500065E3EF /* WordList.swift in Sources */,
+				4F1D9D7A20681DA50065E3EF /* ECPair.swift in Sources */,
 				4F1D9D67206819500065E3EF /* RandomNumberGenerator.swift in Sources */,
+				4F1D9D7C2068A2C90065E3EF /* Network.swift in Sources */,
+				4F2CAB7F206938DD0016B62F /* Secp256k1.swift in Sources */,
+				4F2CAB8B206950480016B62F /* Base58.swift in Sources */,
 				4F1D9D7820681BA30065E3EF /* HDNode.swift in Sources */,
 				4F1D9D69206819500065E3EF /* Binary.swift in Sources */,
 				4F1D9D68206819500065E3EF /* Mnemonic.swift in Sources */,
+				4F2CAB8720694DEC0016B62F /* Ripemd160.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +383,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2CAB82206943C70016B62F /* MnemonicSpec.swift in Sources */,
+				4F2CAB84206943D10016B62F /* ECPairSpec.swift in Sources */,
 				4F1D9D38206818BC0065E3EF /* CoinKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,13 +526,16 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
 				);
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Frameworks/secp256k1.framework";
 				INFOPLIST_FILE = CoinKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.elliottminns.CoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CoinKit/Secp256k1";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -489,13 +554,16 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
 				);
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Frameworks/secp256k1.framework";
 				INFOPLIST_FILE = CoinKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.elliottminns.CoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CoinKit/Secp256k1";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -8,7 +8,7 @@
 
 import Quick
 import Nimble
-@testable import BIP39Kit
+@testable import CoinKit
 
 struct ProxyGenerate: RandomNumberGenerator {
   static func generate(length: Int) -> Data? {
