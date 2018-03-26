@@ -20,7 +20,7 @@ public struct HDNode {
   
   static let highestBit = 0x80000000
   
-  let keyPair: ECPair
+  public let keyPair: ECPair
   
   let chainCode: Data
   
@@ -76,15 +76,15 @@ public struct HDNode {
     try self.init(seed: mnemonic.seed())
   }
   
-  func derive(path: String) -> HDNode {
+  public func derive(path: String) -> HDNode {
     return self
   }
   
-  func deriveHardened(_ index: Int) throws -> HDNode {
+  public func deriveHardened(_ index: Int) throws -> HDNode {
     return try derive(index + HDNode.highestBit)
   }
   
-  func derive(_ index: Int) throws -> HDNode {
+  public func derive(_ index: Int) throws -> HDNode {
     let isHardened = index >= HDNode.highestBit
     var data = Data(count: 1)
     if isHardened {

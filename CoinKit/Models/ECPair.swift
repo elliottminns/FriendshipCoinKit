@@ -11,7 +11,7 @@ import Security
 import CommonCrypto
 import BigInt
 
-enum ECPairError: Error {
+public enum ECPairError: Error {
   case invalidPrivateKey
 }
 
