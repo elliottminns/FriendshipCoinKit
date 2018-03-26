@@ -76,8 +76,33 @@ public struct HDNode {
     try self.init(seed: mnemonic.seed())
   }
   
-  public func derive(path: String) -> HDNode {
-    return self
+  public func derive(path: String) throws -> HDNode {
+    let splitPath = path.components(separatedBy: "/")
+    
+    let comps: [String]
+    if splitPath.first == "m" {
+      guard parentFingerprint.count == 0 else { throw HDNodeError.nodeError("Not a master node") }
+      comps = Array(splitPath[1 ..< splitPath.endIndex])
+    } else {
+      comps = splitPath
+    }
+    
+    return try comps.reduce(self) { (node, indexStr) throws -> HDNode in
+      print(node.fingerprint.hexEncodedString())
+      if indexStr.last == "'" {
+        let start = indexStr.startIndex
+        let end = indexStr.index(before: indexStr.endIndex)
+        guard let index = Int(indexStr[start ..< end]) else {
+          throw HDNodeError.nodeError("Incorrect path number")
+        }
+        return try node.deriveHardened(index)
+      } else {
+        guard let index = Int(indexStr) else  {
+          throw HDNodeError.nodeError("Incorrect path number")
+        }
+        return try node.derive(index)
+      }
+    }
   }
   
   public func deriveHardened(_ index: Int) throws -> HDNode {
@@ -96,17 +121,19 @@ public struct HDNode {
       data[0] = 0x00
       let buffer = keyPair.privateKey!
       data.append(buffer)
-      data.append(String(format:"%2X", index).hexadecimal()!)
+      let margin = Data(count: 4) + String(format:"%2X", index).hexadecimal()!
+      data.append(margin[margin.endIndex - 4 ..< margin.endIndex])
     } else {
       // data = serP(point(kpar)) || ser32(index)
       //      = serP(Kpar) || ser32(index)
       data = Data()
-      let buffer = keyPair.privateKey!
+      let buffer = keyPair.publicKey
       data.append(buffer)
-      data.append(String(format:"%2X", index).hexadecimal()!)
+      let margin = Data(count: 4) + String(format:"%2X", index).hexadecimal()!
+      data.append(margin[margin.endIndex - 4 ..< margin.endIndex])
     }
     
-    let I =  HMAC.sign(data: data, algorithm: .sha512, key: chainCode)
+    let I = HMAC.sign(data: data, algorithm: .sha512, key: chainCode)
     let IL = I[0 ..< 32]
     let IR = I[32 ..< I.count]
     

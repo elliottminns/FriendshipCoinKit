@@ -36,6 +36,30 @@ class HDNodeSpec: QuickSpec {
         expect(node?.fingerprint.hexEncodedString()) == "3442193e"
       }
       
+      describe("deriving a normal child") {
+        let child = try? node!.derive(10)
+        
+        it("should exist") {
+          expect(child).toNot(beNil())
+        }
+        
+        it("should have the correct index") {
+          expect(child?.index) == 10
+        }
+        
+        it("should have the correct address") {
+          expect(child?.address) == "1Gf2zE6vqRxfb3C8JgKkcUUD6qqxTqAh2N"
+        }
+        
+        it("should have the correct public key") {
+          expect(child?.keyPair.publicKey.hexEncodedString()) == "036b7194665a4a2c149025c1c1753f948dd826fab3578fa3d2a6f0848d445bf8e9"
+        }
+        
+        it("should have the correct chain code") {
+          expect(child?.chainCode.hexEncodedString()) == "4db55d5fce1b3eac184ac9dbc1e3a0fa888fdd282bbcd3fadbe37c7fcd9577e6"
+        }
+      }
+      
       describe("deriving a hardened child") {
         let child = try? node!.deriveHardened(0)
         
@@ -59,6 +83,27 @@ class HDNodeSpec: QuickSpec {
           expect(child?.chainCode.hexEncodedString()) == "47fdacbd0f1097043b78c63c20c34ef4ed9a111d980047ad16282c7ae6236141"
         }
       }
+      /*
+      describe("deriving a path") {
+        let path = "m/0'/1/2'/2/1000000000"
+        let child = try? node!.derive(path: path)
+        
+        it("should exist") {
+          expect(child).toNot(beNil())
+        }
+        
+        it("should have the correct address") {
+          expect(child?.address) == "1LZiqrop2HGR4qrH1ULZPyBpU6AUP49Uam"
+        }
+        
+        it("should have the correct identifier") {
+          expect(child?.identifier.hexEncodedString()) == "d69aa102255fed74378278c7812701ea641fdf32"
+        }
+        
+        it("should have the correct fingerprint") {
+          expect(child?.fingerprint.hexEncodedString()) == "d69aa102"
+        }
+      }*/
     }
   }
 }
