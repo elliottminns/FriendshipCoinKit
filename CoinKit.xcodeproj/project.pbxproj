@@ -39,6 +39,7 @@
 		4F2CAB8720694DEC0016B62F /* Ripemd160.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8620694DEC0016B62F /* Ripemd160.swift */; };
 		4F2CAB8920694E5D0016B62F /* Ripemd160+Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8820694E5D0016B62F /* Ripemd160+Hash.swift */; };
 		4F2CAB8B206950480016B62F /* Base58.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8A206950480016B62F /* Base58.swift */; };
+		4F2CAB8D206973550016B62F /* HDNodeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8C206973550016B62F /* HDNodeSpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		4F2CAB8620694DEC0016B62F /* Ripemd160.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ripemd160.swift; sourceTree = "<group>"; };
 		4F2CAB8820694E5D0016B62F /* Ripemd160+Hash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ripemd160+Hash.swift"; sourceTree = "<group>"; };
 		4F2CAB8A206950480016B62F /* Base58.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58.swift; sourceTree = "<group>"; };
+		4F2CAB8C206973550016B62F /* HDNodeSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDNodeSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +232,7 @@
 			children = (
 				4F2CAB81206943C70016B62F /* MnemonicSpec.swift */,
 				4F2CAB83206943D10016B62F /* ECPairSpec.swift */,
+				4F2CAB8C206973550016B62F /* HDNodeSpec.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2CAB8D206973550016B62F /* HDNodeSpec.swift in Sources */,
 				4F2CAB82206943C70016B62F /* MnemonicSpec.swift in Sources */,
 				4F2CAB84206943D10016B62F /* ECPairSpec.swift in Sources */,
 				4F1D9D38206818BC0065E3EF /* CoinKitTests.swift in Sources */,

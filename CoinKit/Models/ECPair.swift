@@ -17,9 +17,13 @@ enum ECPairError: Error {
 
 public struct ECPair {
   
-  let privateKey: Data
+  let privateKey: Data?
+  
+  fileprivate let pubKey: Data?
   
   let network: Network
+  
+  let compressed: Bool
   
   public var address: String {
     let sha = publicKey.sha256
@@ -30,11 +34,13 @@ public struct ECPair {
   }
   
   public var publicKey: Data {
+    if let pubKey = pubKey { return pubKey }
     let secp256k1 = Secp256k1()
-    return try! secp256k1.publicKey(from: privateKey)
+    return try! secp256k1.publicKey(from: privateKey ?? Data(),
+                                    compressed: compressed)
   }
   
-  init(privateKey: Data, network: Network) throws {
+  init(privateKey: Data, network: Network, compressed: Bool = true) throws {
     let secp256k1 = Secp256k1()
     
     let big = BigUInt(privateKey)
@@ -48,5 +54,7 @@ public struct ECPair {
     
     self.privateKey = privateKey
     self.network = network
+    self.pubKey = nil
+    self.compressed = compressed
   }
 }

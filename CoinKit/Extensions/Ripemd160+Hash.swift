@@ -20,3 +20,9 @@ public extension Ripemd160 {
     return Ripemd160.hash(message: message.data(using: .utf8)!)
   }
 }
+
+extension Data {
+  var ripemd160: Data {
+    return Ripemd160.hash(message: self)
+  }
+}
