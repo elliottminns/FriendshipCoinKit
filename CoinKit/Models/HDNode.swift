@@ -14,6 +14,8 @@ enum HDNodeError: Error {
   case seedLength(String)
   case seedInvalid
   case nodeError(String)
+  case invalidBase58
+  case unknownNetwork
 }
 
 public struct HDNode {
@@ -24,9 +26,9 @@ public struct HDNode {
   
   let chainCode: Data
   
-  let depth: Int
+  let depth: UInt8
   
-  let index: Int
+  let index: UInt32
   
   let parentFingerprint: Data
   
@@ -43,10 +45,10 @@ public struct HDNode {
   }
   
   public var isNeutered: Bool {
-    return false
+    return keyPair.privateKey == nil
   }
   
-  public init(seed: Data, network: Network = .bitcoin) throws {
+  public init(seed: Data, network: Network = NetworkType.bitcoin) throws {
     guard seed.count >= 16 else { throw HDNodeError.seedLength("Seed should be at least 128 bits") }
     guard seed.count <= 64 else { throw HDNodeError.seedLength("Seed should be at most 512 bits") }
     
@@ -59,15 +61,7 @@ public struct HDNode {
     self.init(keyPair: pair, chainCode: dataRight, depth: 0, index: 0, parent: Data())
   }
   
-  init(keyPair: ECPair, chainCode: Data, depth: Int, index: Int, parent: Data) {
-    self.keyPair = keyPair
-    self.chainCode = chainCode
-    self.depth = depth
-    self.index = index
-    self.parentFingerprint = parent
-  }
-  
-  public init(seedHex: String, network: Network = .bitcoin) throws {
+  public init(seedHex: String, network: Network = NetworkType.bitcoin) throws {
     guard let seed = seedHex.hexadecimal() else { throw HDNodeError.seedInvalid }
     try self.init(seed: seed, network: network)
   }
@@ -76,19 +70,90 @@ public struct HDNode {
     try self.init(seed: mnemonic.seed())
   }
   
+  public init(base58: String, network: Network) throws {
+    try self.init(base58: base58, networks: [network])
+  }
+  
+  public init(base58: String, networks: [Network]) throws {
+    guard let buffer = base58.base58CheckDecodedData,
+      buffer.count == 78 else {
+      throw HDNodeError.invalidBase58
+    }
+    
+    let version = UInt32(data: buffer[buffer.startIndex ..< buffer.startIndex + 4])
+
+    guard let network = (networks.filter {
+      return version == $0.bip32.private || version == $0.bip32.public
+    }.first) else { throw HDNodeError.unknownNetwork }
+    
+    let depth = buffer[buffer.startIndex + 4]
+    let parentFingerprint = buffer[5 ..< 9]
+    if depth == 0 && parentFingerprint.bytes != [0, 0, 0, 0] {
+      throw HDNodeError.invalidBase58
+    }
+    
+    let index = UInt32(data: buffer[9 ..< 13])
+    if depth == 0 && index != 0 { throw HDNodeError.invalidBase58 }
+    let chainCode = buffer[13 ..< 45]
+    
+    let keyPair: ECPair
+    
+    if version == network.bip32.private {
+      if buffer[45] != 0x00 { throw HDNodeError.invalidBase58 }
+      let privateKey = buffer[46 ..< 78]
+      keyPair = try ECPair(privateKey: privateKey, network: network, compressed: true)
+    } else {
+      let key = buffer[45 ..< 78]
+      keyPair = try ECPair(publicKey: key, network: network, compressed: true)
+    }
+    
+    self.init(keyPair: keyPair, chainCode: chainCode, depth: depth, index: index, parent: parentFingerprint)
+  }
+  
+  init(keyPair: ECPair, chainCode: Data, depth: UInt8, index: UInt32, parent: Data) {
+    self.keyPair = keyPair
+    self.chainCode = chainCode
+    self.depth = depth
+    self.index = index
+    self.parentFingerprint = parent
+  }
+  
+  public func toBase58(isPrivate: Bool) throws -> String {
+    let network = keyPair.network
+    let version = isNeutered || !isPrivate ? network.bip32.public : network.bip32.private
+    let versionBytes = version.bytes
+    let depthBytes = [UInt8(depth)]
+    let parentBytes = parentFingerprint.count > 0 ? parentFingerprint.bytes : [0,0,0,0]
+    let indexBytes = UInt32(index).bytes
+    let chainCodeBytes = chainCode.bytes
+    let keyBytes: [UInt8]
+    
+    if let privateKey = keyPair.privateKey, isPrivate {
+      keyBytes = [0] + privateKey.bytes
+    } else {
+      keyBytes = keyPair.publicKey.bytes
+    }
+    
+    let buffer = versionBytes + depthBytes + parentBytes + indexBytes +
+      chainCodeBytes + keyBytes
+    
+    return buffer.base58CheckEncodedString
+  }
+  
   public func derive(path: String) throws -> HDNode {
     let splitPath = path.components(separatedBy: "/")
     
     let comps: [String]
     if splitPath.first == "m" {
-      guard parentFingerprint.count == 0 else { throw HDNodeError.nodeError("Not a master node") }
+      guard parentFingerprint.count == 0 || parentFingerprint.bytes == [0, 0, 0, 0] else {
+        throw HDNodeError.nodeError("Not a master node")
+      }
       comps = Array(splitPath[1 ..< splitPath.endIndex])
     } else {
       comps = splitPath
     }
     
     return try comps.reduce(self) { (node, indexStr) throws -> HDNode in
-      print(node.fingerprint.hexEncodedString())
       if indexStr.last == "'" {
         let start = indexStr.startIndex
         let end = indexStr.index(before: indexStr.endIndex)
@@ -117,20 +182,15 @@ public struct HDNode {
         throw HDNodeError.nodeError("Could not derive hardened child key")
       }
       
-      // data = 0x00 || ser256(kpar) || ser32(index)
       data[0] = 0x00
       let buffer = keyPair.privateKey!
       data.append(buffer)
-      let margin = Data(count: 4) + String(format:"%2X", index).hexadecimal()!
-      data.append(margin[margin.endIndex - 4 ..< margin.endIndex])
+      data.append(contentsOf: UInt32(index).bytes)
     } else {
-      // data = serP(point(kpar)) || ser32(index)
-      //      = serP(Kpar) || ser32(index)
       data = Data()
       let buffer = keyPair.publicKey
       data.append(buffer)
-      let margin = Data(count: 4) + String(format:"%2X", index).hexadecimal()!
-      data.append(margin[margin.endIndex - 4 ..< margin.endIndex])
+      data.append(contentsOf: UInt32(index).bytes)
     }
     
     let I = HMAC.sign(data: data, algorithm: .sha512, key: chainCode)
@@ -138,48 +198,38 @@ public struct HDNode {
     let IR = I[32 ..< I.count]
     
     let curve = Secp256k1()
-    // In case parse256(IL) >= n, proceed with the next value for i
     if (!curve.check(key: IL)) {
       return try derive(index + 1)
     }
 
-    // Private parent key -> private child key
     let derivedKeyPair: ECPair
-    
     if !isNeutered {
-      // ki = parse256(IL) + kpar (mod n)
       let pIL = BigUInt(IL)
       let ki = (pIL + BigUInt(self.keyPair.privateKey!)) % curve.n
 
-      // In case ki == 0, proceed with the next value for i
       if (ki.signum() == 0) {
         return try self.derive(index + 1)
       }
       
       let dKi = ki.serialize()
       derivedKeyPair = try ECPair(privateKey: dKi, network: keyPair.network)
-      
-      // Public parent key -> public child key
     } else {
-      derivedKeyPair = self.keyPair
-      /*
-      // Ki = point(parse256(IL)) + Kpar
-      //    = G*IL + Kpar
-      let ki = curve.G.multiply(pIL).add(this.keyPair.Q)
-      
-      // In case Ki is the point at infinity, proceed with the next value for i
-      if (curve.isInfinity(Ki)) {
-        return this.derive(index + 1)
+      let secp256k1 = Secp256k1()
+      do {
+        let ki = try secp256k1.add(publicKey: keyPair.publicKey, with: IL)
+        derivedKeyPair = try ECPair(publicKey: ki, network: keyPair.network)
+      } catch let error {
+        if let err = error as? Secp256k1Error,
+          case .invalidTweak = err {
+          return try derive(index + 1)
+        } else {
+          throw error
+        }
       }
-      
-      derivedKeyPair = new ECPair(null, Ki, {
-        network: this.keyPair.network
-      })
-       */
     }
     
     let hd = HDNode(keyPair: derivedKeyPair, chainCode: IR,
-                    depth: depth + 1, index: index,
+                    depth: depth + 1, index: UInt32(index),
                     parent: fingerprint[0 ..< 4])
     return hd
   }

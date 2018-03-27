@@ -15,7 +15,7 @@ class ECPairSpec: QuickSpec {
   override func spec() {
     describe("creating a pair with private key of 1 for bitcoin") {
       let key = "0000000000000000000000000000000000000000000000000000000000000001".hexadecimal()!
-      let pair = try? ECPair(privateKey: key, network: .bitcoin, compressed: false)
+      let pair = try? ECPair(privateKey: key, network: NetworkType.bitcoin, compressed: false)
       
       it("should be valid") {
         expect(pair).toNot(beNil())
@@ -34,7 +34,7 @@ class ECPairSpec: QuickSpec {
     
     describe("Another key pair") {
       let key = "e8f32e723decf4051aefac8e2c93c9c5b214313817cdb01a1494b917c8436b35".hexadecimal()!
-      let pair = try? ECPair(privateKey: key, network: .bitcoin)
+      let pair = try? ECPair(privateKey: key, network: NetworkType.bitcoin)
       
       it("should be valid") {
         expect(pair).toNot(beNil())

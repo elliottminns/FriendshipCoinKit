@@ -114,14 +114,30 @@ struct Base58 {
   }
 }
 
+extension Array where Element == UInt8 {
+  var base58EncodedString: String {
+    guard !self.isEmpty else { return "" }
+    return Base58.base58FromBytes(self)
+  }
+  
+  var base58CheckEncodedString: String {
+    var bytes = self
+    let checksum = [UInt8](bytes.sha256.sha256[0 ..< 4])
+    
+    bytes.append(contentsOf: checksum)
+    
+    return Base58.base58FromBytes(bytes)
+  }
+}
+
 extension Data {
   
-  public var base58EncodedString: String {
+  var base58EncodedString: String {
     guard !self.isEmpty else { return "" }
     return Base58.base58FromBytes(self.map { $0 })
   }
   
-  public var base58CheckEncodedString: String {
+  var base58CheckEncodedString: String {
     var bytes = self.map { $0 }
     let checksum = [UInt8](sha256.sha256[0 ..< 4])
     
@@ -132,21 +148,21 @@ extension Data {
 }
 
 extension String {
-  public var base58EncodedString: String {
+  var base58EncodedString: String {
     return data(using: .utf8)!.base58EncodedString
   }
   
-  public var base58DecodedData: Data? {
+  var base58DecodedData: Data? {
     let bytes = Base58.bytesFromBase58(self)
     return Data(bytes)
   }
   
-  public var base58CheckDecodedData: Data? {
+  var base58CheckDecodedData: Data? {
     guard let bytes = self.base58CheckDecodedBytes else { return nil }
     return Data(bytes)
   }
   
-  public var base58CheckDecodedBytes: [UInt8]? {
+  var base58CheckDecodedBytes: [UInt8]? {
     var bytes = Base58.bytesFromBase58(self)
     guard 4 <= bytes.count else { return nil }
     
@@ -160,7 +176,7 @@ extension String {
     return [UInt8](data)
   }
   
-  public var littleEndianHexToUInt: UInt {
+  var littleEndianHexToUInt: UInt {
     let data = self.hexadecimal()!
     let bytes = data.reversed().map { $0 }
     let db = Data(bytes)

@@ -40,6 +40,8 @@
 		4F2CAB8920694E5D0016B62F /* Ripemd160+Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8820694E5D0016B62F /* Ripemd160+Hash.swift */; };
 		4F2CAB8B206950480016B62F /* Base58.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8A206950480016B62F /* Base58.swift */; };
 		4F2CAB8D206973550016B62F /* HDNodeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8C206973550016B62F /* HDNodeSpec.swift */; };
+		4F2CABB0206A74120016B62F /* Data+Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CABAF206A74120016B62F /* Data+Bytes.swift */; };
+		4F2CABB2206A78790016B62F /* Sha256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CABB1206A78790016B62F /* Sha256.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +92,8 @@
 		4F2CAB8820694E5D0016B62F /* Ripemd160+Hash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ripemd160+Hash.swift"; sourceTree = "<group>"; };
 		4F2CAB8A206950480016B62F /* Base58.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58.swift; sourceTree = "<group>"; };
 		4F2CAB8C206973550016B62F /* HDNodeSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDNodeSpec.swift; sourceTree = "<group>"; };
+		4F2CABAF206A74120016B62F /* Data+Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Bytes.swift"; sourceTree = "<group>"; };
+		4F2CABB1206A78790016B62F /* Sha256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sha256.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +170,7 @@
 				4F1D9D4A206819500065E3EF /* Data+Hex.swift */,
 				4F1D9D4B206819500065E3EF /* String+Hex.swift */,
 				4F2CAB8820694E5D0016B62F /* Ripemd160+Hash.swift */,
+				4F2CABAF206A74120016B62F /* Data+Bytes.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 				4F2CAB7E206938DD0016B62F /* Secp256k1.swift */,
 				4F2CAB8620694DEC0016B62F /* Ripemd160.swift */,
 				4F2CAB8A206950480016B62F /* Base58.swift */,
+				4F2CABB1206A78790016B62F /* Sha256.swift */,
 			);
 			path = Cryptography;
 			sourceTree = "<group>";
@@ -368,11 +374,13 @@
 			files = (
 				4F1D9D5C206819500065E3EF /* String+Hex.swift in Sources */,
 				4F1D9D5B206819500065E3EF /* Data+Hex.swift in Sources */,
+				4F2CABB2206A78790016B62F /* Sha256.swift in Sources */,
 				4F2CAB8920694E5D0016B62F /* Ripemd160+Hash.swift in Sources */,
 				4F1D9D66206819500065E3EF /* WordList.swift in Sources */,
 				4F1D9D7A20681DA50065E3EF /* ECPair.swift in Sources */,
 				4F1D9D67206819500065E3EF /* RandomNumberGenerator.swift in Sources */,
 				4F1D9D7C2068A2C90065E3EF /* Network.swift in Sources */,
+				4F2CABB0206A74120016B62F /* Data+Bytes.swift in Sources */,
 				4F2CAB7F206938DD0016B62F /* Secp256k1.swift in Sources */,
 				4F2CAB8B206950480016B62F /* Base58.swift in Sources */,
 				4F1D9D7820681BA30065E3EF /* HDNode.swift in Sources */,

@@ -14,7 +14,7 @@ class HDNodeSpec: QuickSpec {
   override func spec() {
     describe("The HD node") {
       let seed = "000102030405060708090a0b0c0d0e0f"
-      let node = try? HDNode(seedHex: seed, network: .bitcoin)
+      let node = try? HDNode(seedHex: seed, network: NetworkType.bitcoin)
       
       it("should exist") {
         expect(node).toNot(beNil())
@@ -83,7 +83,7 @@ class HDNodeSpec: QuickSpec {
           expect(child?.chainCode.hexEncodedString()) == "47fdacbd0f1097043b78c63c20c34ef4ed9a111d980047ad16282c7ae6236141"
         }
       }
-      /*
+      
       describe("deriving a path") {
         let path = "m/0'/1/2'/2/1000000000"
         let child = try? node!.derive(path: path)
@@ -103,7 +103,42 @@ class HDNodeSpec: QuickSpec {
         it("should have the correct fingerprint") {
           expect(child?.fingerprint.hexEncodedString()) == "d69aa102"
         }
-      }*/
+        
+        it("should have the correct public base58") {
+          let pub = try! child?.toBase58(isPrivate: false)
+          expect(pub) == "xpub6H1LXWLaKsWFhvm6RVpEL9P4KfRZSW7abD2ttkWP3SSQvnyA8FSVqNTEcYFgJS2UaFcxupHiYkro49S8yGasTvXEYBVPamhGW6cFJodrTHy"
+        }
+        
+        it("should have the correct private base58") {
+          let priv = try! child?.toBase58(isPrivate: true)
+          expect(priv) == "xprvA41z7zogVVwxVSgdKUHDy1SKmdb533PjDz7J6N6mV6uS3ze1ai8FHa8kmHScGpWmj4WggLyQjgPie1rFSruoUihUZREPSL39UNdE3BBDu76"
+        }
+      }
+      
+      describe("creating from public base58") {
+        let key = "xpub6FHa3pjLCk84BayeJxFW2SP4XRrFd1JYnxeLeU8EqN3vDfZmbqBqaGJAyiLjTAwm6ZLRQUMv1ZACTj37sR62cfN7fe5JnJ7dh8zL4fiyLHV"
+        let node = try? HDNode(base58: key, network: NetworkType.bitcoin)
+        
+        it("should exist") {
+          expect(node).toNot(beNil())
+        }
+        
+        describe("child at index 1000000000") {
+          do {
+            let child = try node!.derive(1000000000)
+          
+            it("should exist") {
+              expect(child).toNot(beNil())
+            }
+            
+            it("should have the correct address") {
+              expect(child.address) == "1LZiqrop2HGR4qrH1ULZPyBpU6AUP49Uam"
+            }
+          } catch let error {
+            print(error)
+          }
+        }
+      }
     }
   }
 }

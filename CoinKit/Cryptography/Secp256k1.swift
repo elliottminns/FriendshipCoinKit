@@ -12,6 +12,8 @@ import BigInt
 
 enum Secp256k1Error: Error {
   case invalidKey
+  case input(message: String)
+  case invalidTweak
 }
 
 class Secp256k1 {
@@ -48,6 +50,33 @@ class Secp256k1 {
     let length = compressed ? 33 : 65
     var publicKey = Data(count: length)
     let flags = compressed ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED
+    publicKey.withUnsafeMutableBytes { (buffer: UnsafeMutablePointer<UInt8>) -> Void in
+      var len = length
+      secp256k1_ec_pubkey_serialize(self.context, buffer, &len, &pub, UInt32(flags))
+      return Void()
+    }
+    
+    return publicKey
+  }
+  
+  func add(publicKey: Data, with tweak: Data) throws -> Data {
+    guard tweak.count == 32 else { throw Secp256k1Error.input(message: "Tweak is not 32 bytes") }
+    var pub = secp256k1_pubkey()
+    let parseResult = publicKey.withUnsafeBytes {
+      secp256k1_ec_pubkey_parse(context, &pub, $0, publicKey.count)
+    }
+    
+    guard parseResult == 1 else { throw Secp256k1Error.invalidKey }
+    
+    let tweakResult = tweak.withUnsafeBytes {
+      secp256k1_ec_pubkey_tweak_add(context, &pub, $0)
+    }
+    
+    guard tweakResult == 1 else { throw Secp256k1Error.invalidTweak }
+    
+    let length = 33
+    var publicKey = Data(count: length)
+    let flags = SECP256K1_EC_COMPRESSED
     publicKey.withUnsafeMutableBytes { (buffer: UnsafeMutablePointer<UInt8>) -> Void in
       var len = length
       secp256k1_ec_pubkey_serialize(self.context, buffer, &len, &pub, UInt32(flags))

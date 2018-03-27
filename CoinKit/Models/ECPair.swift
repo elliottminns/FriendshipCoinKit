@@ -57,4 +57,11 @@ public struct ECPair {
     self.pubKey = nil
     self.compressed = compressed
   }
+  
+  init(publicKey: Data, network: Network, compressed: Bool = true) throws {
+    self.privateKey = nil
+    self.network = network
+    self.pubKey = publicKey
+    self.compressed = compressed
+  }
 }
