@@ -42,6 +42,7 @@
 		4F2CAB8D206973550016B62F /* HDNodeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CAB8C206973550016B62F /* HDNodeSpec.swift */; };
 		4F2CABB0206A74120016B62F /* Data+Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CABAF206A74120016B62F /* Data+Bytes.swift */; };
 		4F2CABB2206A78790016B62F /* Sha256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CABB1206A78790016B62F /* Sha256.swift */; };
+		4F84E5CA206E9B13001CD456 /* PaymentURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F84E5C9206E9B13001CD456 /* PaymentURI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,7 @@
 		4F2CAB8C206973550016B62F /* HDNodeSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDNodeSpec.swift; sourceTree = "<group>"; };
 		4F2CABAF206A74120016B62F /* Data+Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Bytes.swift"; sourceTree = "<group>"; };
 		4F2CABB1206A78790016B62F /* Sha256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sha256.swift; sourceTree = "<group>"; };
+		4F84E5C9206E9B13001CD456 /* PaymentURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentURI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 				4F1D9D7720681BA30065E3EF /* HDNode.swift */,
 				4F1D9D7920681DA50065E3EF /* ECPair.swift */,
 				4F1D9D7B2068A2C90065E3EF /* Network.swift */,
+				4F84E5C9206E9B13001CD456 /* PaymentURI.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				TargetAttributes = {
 					4F1D9D28206818BC0065E3EF = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					4F1D9D31206818BC0065E3EF = {
@@ -381,6 +385,7 @@
 				4F1D9D67206819500065E3EF /* RandomNumberGenerator.swift in Sources */,
 				4F1D9D7C2068A2C90065E3EF /* Network.swift in Sources */,
 				4F2CABB0206A74120016B62F /* Data+Bytes.swift in Sources */,
+				4F84E5CA206E9B13001CD456 /* PaymentURI.swift in Sources */,
 				4F2CAB7F206938DD0016B62F /* Secp256k1.swift in Sources */,
 				4F2CAB8B206950480016B62F /* Base58.swift in Sources */,
 				4F1D9D7820681BA30065E3EF /* HDNode.swift in Sources */,
@@ -528,6 +533,7 @@
 		4F1D9D3E206818BC0065E3EF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -548,6 +554,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CoinKit/Secp256k1";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -556,6 +563,7 @@
 		4F1D9D3F206818BC0065E3EF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;

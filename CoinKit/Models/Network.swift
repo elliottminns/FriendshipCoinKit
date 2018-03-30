@@ -11,6 +11,7 @@ import Foundation
 public protocol Network {
   var version: UInt8 { get }
   var bip32: (private: UInt32, public: UInt32) { get }
+  var name: String { get }
 }
 
 public enum NetworkType: Network {
@@ -39,6 +40,16 @@ extension NetworkType {
     case .testnet: return (private: 0x04358394, public: 0x043587cf)
     case .friendshipcoin: return (private: 0x0488ade4, public: 0x0488b21e)
     case .other(_): return (private: 0, public: 0)
+    }
+  }
+  
+  public var name: String {
+    switch self {
+    case .bitcoin: return "bitcoin"
+    case .litecoin: return "litecoin"
+    case .testnet: return "testnet"
+    case .friendshipcoin: return "friendshipcoin"
+    case .other(_): return "other"
     }
   }
 }
