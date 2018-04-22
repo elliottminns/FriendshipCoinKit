@@ -78,8 +78,8 @@ struct Base58 {
       zerosCount += 1
     }
     
-    let size = string.lengthOfBytes(using: String.Encoding.utf8) * 733 / 1000 + 1 - zerosCount
-    var base58: [UInt8] = Array(repeating: 0, count: size)
+    let size = string.lengthOfBytes(using: String.Encoding.utf8) * 733 / 1000 + 1// - zerosCount
+    var base58: [UInt8] = size > 0 ? Array(repeating: 0, count: size) : []
     for c in string where c != " " {
       // search for base58 character
       guard let base58Index = base58Alphabet.index(of: c) else { return [] }

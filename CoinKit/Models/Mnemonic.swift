@@ -89,7 +89,7 @@ extension Mnemonic {
     let checksum = deriveChecksumBits(buffer: bytes)
     let total = Binary(bytes: bits.bytes + checksum.bytes)
     let numChunks = total.bytes.count * 8 / 11
-    let chunks = (0 ..< numChunks).flatMap { (index) -> Int? in
+    let chunks = (0 ..< numChunks).compactMap { (index) -> Int? in
       let start = index * 11
       let endIndex = start + 11
       let size = total.bytes.count * 8

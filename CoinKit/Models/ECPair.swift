@@ -15,7 +15,12 @@ public enum ECPairError: Error {
   case invalidPrivateKey
 }
 
-public struct ECPair {
+public struct ECPair: Signable {
+  
+  enum Error: Swift.Error {
+    case invalidPrivateKey
+    case cannotSign
+  }
   
   let privateKey: Data?
   
@@ -45,11 +50,11 @@ public struct ECPair {
     
     let big = BigUInt(privateKey)
     guard big > 0 else {
-      throw ECPairError.invalidPrivateKey
+      throw Error.invalidPrivateKey
     }
     
     guard secp256k1.check(key: privateKey) else {
-      throw ECPairError.invalidPrivateKey
+      throw Error.invalidPrivateKey
     }
     
     self.privateKey = privateKey
@@ -63,5 +68,12 @@ public struct ECPair {
     self.network = network
     self.pubKey = publicKey
     self.compressed = compressed
+  }
+  
+  func sign(_ hash: Data) throws -> ECSignature {
+    guard let privateKey = privateKey else { throw Error.cannotSign }
+    let ecdsa = Secp256k1()
+    let signatureData = ecdsa.sign(hash: hash, privateKey: privateKey)
+    return ECSignature(data: signatureData)
   }
 }

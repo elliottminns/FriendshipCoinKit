@@ -8,10 +8,16 @@
 
 import Foundation
 
-extension UInt32 {
+
+enum Endian {
+  case big
+  case little
+}
+
+extension FixedWidthInteger {
   var bytes: [UInt8] {
     var bigEndian = self.bigEndian
-    let count = MemoryLayout<UInt32>.size
+    let count = MemoryLayout<Self>.size
     let bytePtr = withUnsafePointer(to: &bigEndian) {
       $0.withMemoryRebound(to: UInt8.self, capacity: count) {
         UnsafeBufferPointer(start: $0, count: count)
@@ -21,13 +27,16 @@ extension UInt32 {
     return byteArray
   }
   
-  init(bytes: [UInt8]) {
+  init(bytes: [UInt8], endian: Endian = .big) {
     let data = Data(bytes: bytes)
-    self.init(data: data)
+    self.init(data: data, endian: endian)
   }
   
-  init(data: Data) {
-    self = UInt32(bigEndian: data.withUnsafeBytes { $0.pointee })
+  init(data: Data, endian: Endian = .big) {
+    switch endian {
+    case .big: self.init(bigEndian: data.withUnsafeBytes { $0.pointee })
+    case .little: self.init(littleEndian: data.withUnsafeBytes { $0.pointee })
+    }
   }
 }
 

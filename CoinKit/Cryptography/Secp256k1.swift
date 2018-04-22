@@ -85,4 +85,24 @@ class Secp256k1 {
     
     return publicKey
   }
+  
+  func sign(hash: Data, privateKey: Data) -> Data {
+    var signature = secp256k1_ecdsa_signature()
+    
+    _ = hash.withUnsafeBytes { msg in
+      return privateKey.withUnsafeBytes { seckey in
+        secp256k1_ecdsa_sign(context, &signature, msg, seckey, nil, nil)
+      }
+    }
+    
+    let length = 33
+    var sigData = Data(count: length)
+    sigData.withUnsafeMutableBytes { (buffer: UnsafeMutablePointer<UInt8>) -> Void in
+      var len = length
+      secp256k1_ecdsa_signature_serialize_der(context, buffer, &len, &signature)
+      return Void()
+    }
+    
+    return sigData
+  }
 }
