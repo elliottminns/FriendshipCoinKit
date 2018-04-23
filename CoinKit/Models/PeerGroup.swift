@@ -78,6 +78,14 @@ public extension PeerGroup {
     public let dnsSeeds: [String]
     
     public let staticNodes: [String]
+    
+    public init(magic: Int32, defaultPort: Int32, dnsSeeds: [String],
+                staticNodes: [String]) {
+      self.magic = magic
+      self.defaultPort = defaultPort
+      self.dnsSeeds = dnsSeeds
+      self.staticNodes = staticNodes
+    }
   }
   
   public struct Options {

@@ -19,9 +19,7 @@ enum Secp256k1Error: Error {
 class Secp256k1 {
   
   let n = BigUInt("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141", radix: 16)!
-  
-  //let shared: Secp256k1 = Secp256k1()
-  
+
   let context: OpaquePointer
   
   init() {

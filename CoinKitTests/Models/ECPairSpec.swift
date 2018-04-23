@@ -8,7 +8,6 @@
 
 import Quick
 import Nimble
-import BigInt
 @testable import CoinKit
 
 class ECPairSpec: QuickSpec {
