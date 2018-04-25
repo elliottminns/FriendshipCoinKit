@@ -8,7 +8,12 @@
 
 import Foundation
 
-extension Data {
+public extension Data {
+  mutating func append(bool: Bool) {
+    let value: UInt8 = bool ? 1 : 0
+    append(bytesFrom: value, endian: .little)
+  }
+  
   mutating func append<T: FixedWidthInteger>(bytesFrom number: T, endian: Endian) {
     let bytes = endian == .big ? number.bytes : number.bytes.reversed()
     self.append(contentsOf: bytes)

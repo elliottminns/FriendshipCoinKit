@@ -9,7 +9,7 @@
 import Foundation
 import CommonCrypto
 
-extension String {
+public extension String {
   
   /// Create `Data` from hexadecimal string representation
   ///

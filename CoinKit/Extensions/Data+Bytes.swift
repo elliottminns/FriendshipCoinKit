@@ -8,13 +8,12 @@
 
 import Foundation
 
-
-enum Endian {
+public enum Endian {
   case big
   case little
 }
 
-extension FixedWidthInteger {
+public extension FixedWidthInteger {
   var bytes: [UInt8] {
     var bigEndian = self.bigEndian
     let count = MemoryLayout<Self>.size
@@ -25,6 +24,11 @@ extension FixedWidthInteger {
     }
     let byteArray = Array(bytePtr)
     return byteArray
+  }
+  
+  func toData(endian: Endian) -> Data {
+    let bytes = endian == .little ? self.bytes.reversed() : self.bytes
+    return Data.init(bytes: bytes)
   }
   
   init(bytes: [UInt8], endian: Endian = .big) {

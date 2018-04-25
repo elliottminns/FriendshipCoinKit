@@ -12,6 +12,10 @@ class DataReader {
   
   fileprivate var position: UInt
   
+  var isEnded: Bool {
+    return position >= data.count
+  }
+  
   let data: Data
   
   init(data: Data) {
