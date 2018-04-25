@@ -51,6 +51,11 @@
 		4F328722208FFB4400CCCDC4 /* GetHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F328721208FFB4400CCCDC4 /* GetHeaders.swift */; };
 		4F3D757B2090CAD6005A9091 /* HeaderHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D757A2090CAD6005A9091 /* HeaderHandler.swift */; };
 		4F3D757D2090D110005A9091 /* PeerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D757C2090D110005A9091 /* PeerHandler.swift */; };
+		4F3D75802090FF53005A9091 /* HashingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D757F2090FF53005A9091 /* HashingAlgorithm.swift */; };
+		4F3D75852090FFD6005A9091 /* neoscrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3D75832090FFD6005A9091 /* neoscrypt.h */; };
+		4F3D75862090FFD6005A9091 /* neoscrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D75842090FFD6005A9091 /* neoscrypt.c */; };
+		4F3D758820910035005A9091 /* NeoScrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D758720910035005A9091 /* NeoScrypt.swift */; };
+		4F3D758B2091106D005A9091 /* SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D758A2091106D005A9091 /* SHA256.swift */; };
 		4F487363208544C6001DB20F /* DataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F487362208544C6001DB20F /* DataReader.swift */; };
 		4F4873652085625D001DB20F /* TransactionOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4873642085625D001DB20F /* TransactionOutput.swift */; };
 		4F4873692086296A001DB20F /* Data+Append.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4873682086296A001DB20F /* Data+Append.swift */; };
@@ -150,6 +155,11 @@
 		4F328721208FFB4400CCCDC4 /* GetHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetHeaders.swift; sourceTree = "<group>"; };
 		4F3D757A2090CAD6005A9091 /* HeaderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderHandler.swift; sourceTree = "<group>"; };
 		4F3D757C2090D110005A9091 /* PeerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerHandler.swift; sourceTree = "<group>"; };
+		4F3D757F2090FF53005A9091 /* HashingAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashingAlgorithm.swift; sourceTree = "<group>"; };
+		4F3D75832090FFD6005A9091 /* neoscrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = neoscrypt.h; sourceTree = "<group>"; };
+		4F3D75842090FFD6005A9091 /* neoscrypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = neoscrypt.c; sourceTree = "<group>"; };
+		4F3D758720910035005A9091 /* NeoScrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoScrypt.swift; sourceTree = "<group>"; };
+		4F3D758A2091106D005A9091 /* SHA256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256.swift; sourceTree = "<group>"; };
 		4F487362208544C6001DB20F /* DataReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataReader.swift; sourceTree = "<group>"; };
 		4F4873642085625D001DB20F /* TransactionOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOutput.swift; sourceTree = "<group>"; };
 		4F4873682086296A001DB20F /* Data+Append.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Append.swift"; sourceTree = "<group>"; };
@@ -236,6 +246,7 @@
 		4F1D9D2B206818BC0065E3EF /* CoinKit */ = {
 			isa = PBXGroup;
 			children = (
+				4F3D757E2090FF43005A9091 /* Hashing */,
 				4F328717208FEF1700CCCDC4 /* Blockchain */,
 				4FA1E622208D934C00816CE2 /* Networking */,
 				4F487361208544B1001DB20F /* DataStream */,
@@ -378,6 +389,42 @@
 			path = Blockchain;
 			sourceTree = "<group>";
 		};
+		4F3D757E2090FF43005A9091 /* Hashing */ = {
+			isa = PBXGroup;
+			children = (
+				4F3D75812090FFA9005A9091 /* Algorithms */,
+				4F3D757F2090FF53005A9091 /* HashingAlgorithm.swift */,
+			);
+			path = Hashing;
+			sourceTree = "<group>";
+		};
+		4F3D75812090FFA9005A9091 /* Algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				4F3D758920911062005A9091 /* Sha256 */,
+				4F3D75822090FFB3005A9091 /* NeoScrypt */,
+			);
+			path = Algorithms;
+			sourceTree = "<group>";
+		};
+		4F3D75822090FFB3005A9091 /* NeoScrypt */ = {
+			isa = PBXGroup;
+			children = (
+				4F3D75832090FFD6005A9091 /* neoscrypt.h */,
+				4F3D75842090FFD6005A9091 /* neoscrypt.c */,
+				4F3D758720910035005A9091 /* NeoScrypt.swift */,
+			);
+			path = NeoScrypt;
+			sourceTree = "<group>";
+		};
+		4F3D758920911062005A9091 /* Sha256 */ = {
+			isa = PBXGroup;
+			children = (
+				4F3D758A2091106D005A9091 /* SHA256.swift */,
+			);
+			path = Sha256;
+			sourceTree = "<group>";
+		};
 		4F487361208544B1001DB20F /* DataStream */ = {
 			isa = PBXGroup;
 			children = (
@@ -473,6 +520,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3D75852090FFD6005A9091 /* neoscrypt.h in Headers */,
 				4F1D9D3A206818BC0065E3EF /* CoinKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -618,12 +666,14 @@
 				4FA1E638208E3A7300816CE2 /* Decoder.swift in Sources */,
 				4FB8C713208BB09A005F7D8E /* Bip66.swift in Sources */,
 				4F5816682084F4B200939306 /* Template.swift in Sources */,
+				4F3D758B2091106D005A9091 /* SHA256.swift in Sources */,
 				4F2CAB7F206938DD0016B62F /* Secp256k1.swift in Sources */,
 				4F5816712084F7B900939306 /* OPCodes.swift in Sources */,
 				4F2CAB8B206950480016B62F /* Base58.swift in Sources */,
 				4F5816652084EE7D00939306 /* Address.swift in Sources */,
 				4F4873652085625D001DB20F /* TransactionOutput.swift in Sources */,
 				4FA1E63A208E4BF200816CE2 /* NetworkConstants.swift in Sources */,
+				4F3D75802090FF53005A9091 /* HashingAlgorithm.swift in Sources */,
 				4FB8C715208BBA9C005F7D8E /* Data+Crypto.swift in Sources */,
 				4F58166F2084F6FB00939306 /* Script.swift in Sources */,
 				4F58166C2084F59700939306 /* VersionTemplate.swift in Sources */,
@@ -633,7 +683,9 @@
 				4FB8C70D208B9274005F7D8E /* TransactionInputExpanded.swift in Sources */,
 				4FC4ED16208ED2D800A7E848 /* MessageHandler.swift in Sources */,
 				4FA1E61F208D835600816CE2 /* P2PNetwork.swift in Sources */,
+				4F3D758820910035005A9091 /* NeoScrypt.swift in Sources */,
 				4FA3E22A2072D1BB0093524E /* TransactionBuilder.swift in Sources */,
+				4F3D75862090FFD6005A9091 /* neoscrypt.c in Sources */,
 				4F3D757B2090CAD6005A9091 /* HeaderHandler.swift in Sources */,
 				4FC4ED19208EDA6800A7E848 /* PingHandler.swift in Sources */,
 				4FB8C711208B9DD6005F7D8E /* ScriptType.swift in Sources */,

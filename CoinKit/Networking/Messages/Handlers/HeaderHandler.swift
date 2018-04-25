@@ -14,6 +14,12 @@ struct HeaderHandler: MessageHandler {
     
     let reader = DataReader(data: message.value)
     
+    var headers: [BlockHeader] = []
+    
+    let byteCount: UInt8 = reader.read(endian: .little)
+    
+    let headerCount: UInt16 = reader.read(endian: .little)
+    
     repeat {
       let version: Int32 = reader.read(endian: .little)
       let previousHash: Data = reader.read(bytes: 32)
@@ -21,15 +27,16 @@ struct HeaderHandler: MessageHandler {
       let timestamp: UInt32 = reader.read(endian: .little)
       let bits: UInt32 = reader.read(endian: .little)
       let nonce: UInt32 = reader.read(endian: .little)
-      let transactionsCount: UInt = reader.readVariableInt()
+      let transactionsCount: UInt16 = reader.read(endian: .little)
    
-      let header = BlockHeader(hash: Data(), version: version,
-                               prevHash: previousHash, merkleRoot: merkleRoot,
-                               bits: bits, nonce: nonce, timestamp: timestamp)
+      let header = BlockHeader(version: version, prevHash: previousHash,
+                               merkleRoot: merkleRoot, bits: bits, nonce: nonce,
+                               timestamp: timestamp)
+      headers.append(header)
     } while !reader.isEnded
   }
   
   func handles(message: Message) -> Bool {
-    return message.type == "header"
+    return message.type == "headers"
   }
 }

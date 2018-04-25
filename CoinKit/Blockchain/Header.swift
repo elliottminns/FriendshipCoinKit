@@ -20,12 +20,9 @@ public struct BlockHeader {
   
   public let nonce: UInt32
   
-  public let hash: Data
-  
   public let timestamp: UInt32
   
-  public init(hash: Data, version: Int32, prevHash: Data, merkleRoot: Data, bits: UInt32, nonce: UInt32, timestamp: UInt32) {
-    self.hash = hash
+  public init(version: Int32, prevHash: Data, merkleRoot: Data, bits: UInt32, nonce: UInt32, timestamp: UInt32) {
     self.version = version
     self.prevHash = prevHash
     self.merkleRoot = merkleRoot
@@ -37,6 +34,7 @@ public struct BlockHeader {
 
 extension BlockHeader: Equatable {
   public static func ==(lhs: BlockHeader, rhs: BlockHeader) -> Bool {
-    return lhs.merkleRoot == rhs.merkleRoot && lhs.prevHash == rhs.prevHash && lhs.hash == rhs.hash
+    let neoscrypt = NeoScrypt()
+    return neoscrypt.hash(blockHeader: lhs) == neoscrypt.hash(blockHeader: rhs)
   }
 }

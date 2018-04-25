@@ -53,7 +53,10 @@ struct PeerHandler: Hashable, MessageHandler {
   
   func handles(message: Message) -> Bool {
     let handles = handler.handles(message: message)
-    if handles { timer.invalidate() }
+    print("HANDLE : \(message.type) - \(handles)")
+    if handles {
+      timer.invalidate()
+    }
     return handles
   }
   

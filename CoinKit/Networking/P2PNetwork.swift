@@ -28,6 +28,8 @@ public class P2PNetwork {
   
   public weak var delegate: P2PNetworkDelegate?
   
+  public let hashingAlgorithm: HashingAlgorithm
+  
   var connecting: Bool = false
   
   fileprivate(set) public var peers: [Peer] = []
@@ -36,10 +38,11 @@ public class P2PNetwork {
   
   fileprivate var messageHandlers: [MessageHandler] = [PingHandler(), VersionHandler()]
   
-  public init(parameters: Parameters, options: Options = Options(), delegate: P2PNetworkDelegate? = nil) {
+  public init(parameters: Parameters, options: Options = Options(), hashingAlgorithm: HashingAlgorithm = NeoScrypt(), delegate: P2PNetworkDelegate? = nil) {
     self.parameters = parameters
     self.options = options
     self.delegate = delegate
+    self.hashingAlgorithm = hashingAlgorithm
   }
   
   public func connect() {
@@ -63,9 +66,14 @@ public class P2PNetwork {
   }
   
   public func getHeaders(locators: [BlockHeader], stop: BlockHeader? = nil) {
-    let lcs = locators.map { $0.hash }
+    let lcs = locators.map(hashingAlgorithm.hash(blockHeader:))
     let peer = peers.random()
-    peer.getHeaders(locator: lcs, stop: stop?.hash) { (result, peer) in
+    let stopHash: Data?
+    
+    if let stop = stop { stopHash = hashingAlgorithm.hash(blockHeader: stop) }
+    else { stopHash = nil }
+    
+    peer.getHeaders(locator: lcs, stop: stopHash) { (result, peer) in
       switch result {
       case .failure(_): self.getHeaders(locators: locators, stop: stop)
       case .success(_): break
