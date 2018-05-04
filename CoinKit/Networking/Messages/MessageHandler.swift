@@ -11,4 +11,10 @@ import Foundation
 public protocol MessageHandler {
   func handle(message: Message, from peer: Peer)
   func handles(message: Message) -> Bool
+  
+  var isFinished: Bool { get }
+}
+
+extension MessageHandler {
+  var isFinished: Bool { return true }
 }

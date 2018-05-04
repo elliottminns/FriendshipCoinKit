@@ -16,27 +16,30 @@ enum Secp256k1Error: Error {
   case invalidTweak
 }
 
-class Secp256k1 {
+public class Secp256k1 {
   
   let n = BigUInt("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141", radix: 16)!
 
   let context: OpaquePointer
   
-  init() {
+  let signContext: OpaquePointer
+  
+  public init() {
     self.context = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY))
+    self.signContext = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN))
   }
   
   deinit {
     secp256k1_context_destroy(self.context)
   }
   
-  func check(key: Data) -> Bool {
+  public func check(key: Data) -> Bool {
     return key.withUnsafeBytes {
       return secp256k1_ec_seckey_verify(self.context, $0) == 1
     }
   }
   
-  func publicKey(from key: Data, compressed: Bool = false) throws -> Data {
+  public func publicKey(from key: Data, compressed: Bool = false) throws -> Data {
     var pub = secp256k1_pubkey()
     
     let result = key.withUnsafeBytes {
@@ -57,7 +60,7 @@ class Secp256k1 {
     return publicKey
   }
   
-  func add(publicKey: Data, with tweak: Data) throws -> Data {
+  public func add(publicKey: Data, with tweak: Data) throws -> Data {
     guard tweak.count == 32 else { throw Secp256k1Error.input(message: "Tweak is not 32 bytes") }
     var pub = secp256k1_pubkey()
     let parseResult = publicKey.withUnsafeBytes {
@@ -84,23 +87,28 @@ class Secp256k1 {
     return publicKey
   }
   
-  func sign(hash: Data, privateKey: Data) -> Data {
+  public func sign(hash: Data, privateKey: Data) -> Data {
     var signature = secp256k1_ecdsa_signature()
     
-    _ = hash.withUnsafeBytes { msg in
+    var nonceStart = Data()
+    nonceStart.append(bytesFrom: UInt32(1), endian: .little)
+    nonceStart.append(Data(count: 28))
+    let ret = hash.withUnsafeBytes { msg in
       return privateKey.withUnsafeBytes { seckey in
-        secp256k1_ecdsa_sign(context, &signature, msg, seckey, nil, nil)
+        return nonceStart.withUnsafeBytes { nonce in
+          return secp256k1_ecdsa_sign(signContext, &signature, msg, seckey, secp256k1_nonce_function_rfc6979, nonce)
+        }
       }
     }
     
-    let length = 33
+    let length = 72
     var sigData = Data(count: length)
-    sigData.withUnsafeMutableBytes { (buffer: UnsafeMutablePointer<UInt8>) -> Void in
+    let total = sigData.withUnsafeMutableBytes { (buffer: UnsafeMutablePointer<UInt8>) -> Int in
       var len = length
-      secp256k1_ecdsa_signature_serialize_der(context, buffer, &len, &signature)
-      return Void()
+      secp256k1_ecdsa_signature_serialize_der(signContext, buffer, &len, &signature)
+      return len
     }
     
-    return sigData
+    return Data(sigData[0 ..< total])
   }
 }

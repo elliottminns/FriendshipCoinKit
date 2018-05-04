@@ -8,17 +8,20 @@
 
 import Foundation
 
-extension Transaction {
-  struct Output {
-    let amount: UInt64
-    
-    let script: Data
-    
-    static let blank: Output = Output(amount: UInt64.max)
-    
-    init(amount: UInt64, script: Data = Data()) {
-      self.amount = amount
-      self.script = script
-    }
+public struct TransactionOutput {
+  public let amount: UInt64
+  
+  public let script: Data
+  
+  public static let blank: TransactionOutput = TransactionOutput(amount: UInt64.max)
+  
+  public init(amount: UInt64, script: Data = Data()) {
+    self.amount = amount
+    self.script = script
+  }
+ 
+  public func address(network: Network) -> Address? {
+    return Address(outputScript: script, network: network)
   }
 }
+

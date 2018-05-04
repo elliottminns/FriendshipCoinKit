@@ -8,45 +8,20 @@
 
 import Foundation
 
-extension Transaction {
-  enum InputType {
-    case prevOut
-  }
+public protocol TransactionInput {
+  var hash: Data { get }
   
-  public struct Input {
-    
-    let hash: Data
-    
-    let index: UInt32
-    
-    let script: Data
-    
-    let sequence: UInt32
-    
-    let witness: [Data]
-    
-    let type: InputType = .prevOut
-    
-    init(hex: String, index: UInt32, scriptHex: String) {
-      let data = hex.hexadecimal() ?? Data()
-      let script = scriptHex.hexadecimal() ?? Data()
-      self.init(hash: data, index: index, script: script)
-    }
-    
-    init(hash: Data, index: UInt32, script: Data = Data(), sequence: UInt32? = nil, witness: [Data] = []) {
-      self.hash = hash
-      self.index = index
-      self.script = script
-      self.sequence = sequence ?? 4294967295
-      self.witness = witness
-    }
-    
-    func build() {
-      
-    }
-    
-    func add(witness: [Data]) -> Input {
-      return Input(hash: hash, index: index, script: script, sequence: sequence, witness: witness)
-    }
+  var index: UInt32 { get }
+  
+  var script: Data { get }
+  
+  var sequence: UInt32 { get }
+  
+  init(hash: Data, index: UInt32, script: Data, sequence: UInt32)
+}
+
+extension TransactionInput {
+  public func address(network: Network) -> Address? {
+    return Address(inputScript: script, network: network)
   }
 }

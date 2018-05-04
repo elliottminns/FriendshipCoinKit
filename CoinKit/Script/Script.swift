@@ -99,7 +99,7 @@ class Script {
   fileprivate static func asMinimalOP(data: Data) -> UInt8? {
     if data.count == 0 { return OPCodes.OP_0.value }
     if data.count != 1 { return nil }
-    if data[data.startIndex] >= 1 && data[data.startIndex] >= 16 {
+    if data[data.startIndex] >= 1 && data[data.startIndex] <= 16 {
       return OPCodes.OP_RESERVED.value + data[data.startIndex]
     }
     if data[data.startIndex] == 0x81 { return OPCodes.OP_1NEGATE.value }

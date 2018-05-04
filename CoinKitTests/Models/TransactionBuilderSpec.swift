@@ -34,10 +34,10 @@ class TransactionBuilderSpec: QuickSpec {
   override func spec() {
     describe("The transaction builder") {
       
-      var builder: Transaction.Builder!
+      var builder: BitcoinTransaction.Builder!
       
       beforeEach {
-        builder = Transaction.Builder(network: NetworkType.bitcoin)
+        builder = BitcoinTransaction.Builder(network: NetworkType.bitcoin)
       }
       
       it("should correctly set the index of added transactions") {
@@ -83,8 +83,8 @@ class TransactionBuilderSpec: QuickSpec {
       describe("from transaction") {
         fixtures.forEach { fixture in
           describe("with \(fixture.description)") {
-            let transaction = try! Transaction(hex: fixture.txHex)
-            let builder = Transaction.Builder(transaction: transaction, network: NetworkType.bitcoin)
+            let transaction = try! BitcoinTransaction(hex: fixture.txHex)
+            let builder = BitcoinTransaction.Builder(transaction: transaction, network: NetworkType.bitcoin)
             let txb = try? builder.build()
 
             it("should build a transaction") {
@@ -106,7 +106,7 @@ class TransactionBuilderSpec: QuickSpec {
         var network: Network = NetworkType.bitcoin
       }
       
-      let builder = Transaction.Builder(network: NetworkType.bitcoin)
+      let builder = BitcoinTransaction.Builder(network: NetworkType.bitcoin)
       try? builder.add(input: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", vout: 1)
       try? builder.add(output: "1111111111111111111114oLvT2", amount: UInt64(1e5))
       try? builder.sign(vin: 0, signable: TestSignable())

@@ -50,7 +50,7 @@ extension CommandType {
       data.append(inventory.reduce(Data()) { (data, item) -> Data in
         var data = data
         data.append(bytesFrom: UInt32(item.type.rawValue), endian: .little)
-        data.append(contentsOf: item.hash.bytes.reversed())
+        data.append(item.hash)
         return data
       })
       

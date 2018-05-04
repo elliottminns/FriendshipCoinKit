@@ -13,15 +13,26 @@ public protocol HashingAlgorithm {
 }
 
 public extension HashingAlgorithm {
-  public func hash(blockHeader: BlockHeader) -> Data {
+  
+  public func hash(version: Int32, previousHash: Data, merkleRoot: Data,
+                   timestamp: UInt32, bits: UInt32, nonce: UInt32) -> Data {
     var data = Data()
-    data.append(bytesFrom: blockHeader.version, endian: .little)
-    data.append(Data(blockHeader.prevHash.reversed()))
-    data.append(Data(blockHeader.merkleRoot.reversed()))
-    data.append(bytesFrom: blockHeader.timestamp, endian: .little)
-    data.append(bytesFrom: blockHeader.bits, endian: .little)
-    data.append(bytesFrom: blockHeader.nonce, endian: .little)
+    data.append(bytesFrom: version, endian: .little)
+    data.append(previousHash)
+    data.append(merkleRoot)
+    data.append(bytesFrom: timestamp, endian: .little)
+    data.append(bytesFrom: bits, endian: .little)
+    data.append(bytesFrom: nonce, endian: .little)
     
     return hash(data: data)
+  }
+  
+  public func hash(blockHeader: BlockHeader) -> Data {
+    return hash(version: blockHeader.version,
+                previousHash: blockHeader.prevHash,
+                merkleRoot: blockHeader.merkleRoot,
+                timestamp: blockHeader.timestamp,
+                bits: blockHeader.bits,
+                nonce: blockHeader.nonce)
   }
 }

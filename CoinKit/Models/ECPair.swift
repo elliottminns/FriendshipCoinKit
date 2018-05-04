@@ -22,7 +22,7 @@ public struct ECPair: Signable {
     case cannotSign
   }
   
-  let privateKey: Data?
+  public let privateKey: Data?
   
   fileprivate let pubKey: Data?
   

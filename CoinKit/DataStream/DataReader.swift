@@ -8,57 +8,73 @@
 
 import Foundation
 
-class DataReader {
+public class DataReader {
   
-  fileprivate var position: UInt
+  public enum Error: Swift.Error {
+    case incorrectRead
+    case tooManyBytes
+  }
   
-  var isEnded: Bool {
+  public fileprivate(set) var position: UInt
+  
+  public var isEnded: Bool {
     return position >= data.count
   }
   
-  let data: Data
+  fileprivate var pos: Data.Index {
+    return data.startIndex + Int(position)
+  }
   
-  init(data: Data) {
+  public let data: Data
+  
+  public init(data: Data) {
     self.data = data
     self.position = 0
   }
   
-  func next() -> UInt8 {
+  public func next() -> UInt8 {
     let pos = position
     position = position + 1
     return data[Int(pos)]
   }
   
-  func move(positionBy delta: Int) {
+  public func move(positionBy delta: Int) {
     position = position.advanced(by: delta)
   }
   
-  func read<T: FixedWidthInteger>(endian: Endian) -> T {
-    let size = UInt(MemoryLayout<T>.size)
-    let d = data[position ..< (position + size)]
-    position = position + size
+  public func read<T: FixedWidthInteger>(endian: Endian) throws -> T {
+    let size = Int(MemoryLayout<T>.size)
+    guard data.endIndex >= pos + size else { throw Error.tooManyBytes }
+    let d = data[pos ..< (pos + size)]
+    position = position + UInt(size)
     return T.init(data: d, endian: endian)
   }
   
-  func readVariableInt() -> UInt {
+  public func readVariableInt() -> UInt {
     let value: UInt
     let size: Int
-    let first = data[data.startIndex.advanced(by: Int(position))]
+    let start = data.startIndex.advanced(by: Int(position))
+    let first = data[start]
     if first < 0xfd {
       size = 1
       value = UInt(first)
     } else if first == 0xfd {
       size = 3
-      let bytes = data[data.startIndex + 1 ..< data.startIndex + 3]
+      let end = start.advanced(by: 1).advanced(by: size - 1)
+      let bytes = data[start.advanced(by: 1) ..< end]
       let val = UInt16.init(data: bytes, endian: .little)
       value = UInt(val)
     } else if first == 0xfe {
       size = 5
-      let val = UInt32(data: data[data.startIndex + 1 ..< data.startIndex + 5], endian: .little)
+      let end = start.advanced(by: 1).advanced(by: size - 1)
+      let bytes = data[start.advanced(by: 1) ..< end]
+      let val = UInt32(data: bytes, endian: .little)
       value = UInt(val)
     } else {
       size = 9
-      let val = UInt64(data: data[data.startIndex + 1 ..< data.startIndex + 9], endian: .little)
+      let end = start.advanced(by: 1).advanced(by: size - 1)
+      let bytes = data[start.advanced(by: 1) ..< end]
+      let val = UInt64(data: bytes, endian: .little)
       value = UInt(val)
     }
     
@@ -67,22 +83,34 @@ class DataReader {
     return value
   }
   
-  func read(bytes: UInt) -> Data {
-    let start = UInt(data.startIndex) + position
-    let end = UInt(data.startIndex) + position + bytes
-    position = end
+  public func read(bytes: UInt) throws -> Data {
+    let start = pos
+    let end = pos + Int(bytes)
+    position = position + bytes
+    
+    if (end > data.endIndex) {
+      throw Error.tooManyBytes
+    }
     return Data(data[start ..< end])
   }
   
-  func readVariableBytes() -> Data {
+  public func readVariableBytes() throws -> Data {
+    let startPosition = position
     let size = readVariableInt()
-    return read(bytes: size)
+    do {
+      return try read(bytes: size)
+    } catch let error as Error where error == .tooManyBytes {
+      position = startPosition
+      throw error
+    } catch let error {
+      throw error
+    }
   }
   
-  func readVector() -> [Data] {
+  public func readVector() throws -> [Data] {
     let count = readVariableInt()
-    return (0 ..< count).map { _ in
-      return readVariableBytes()
+    return try (0 ..< count).map { _ in
+      return try readVariableBytes()
     }
   }
  }

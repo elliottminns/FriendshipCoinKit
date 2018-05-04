@@ -31,6 +31,8 @@ class Connection: NSObject {
   fileprivate var inputStream: InputStream?
   fileprivate var outputStream: OutputStream?
   
+  let queue: DispatchQueue
+  
   var callback: (() -> Void)?
   
   var delegate: ConnectionDelegate?
@@ -56,6 +58,7 @@ class Connection: NSObject {
     self.port = port
     self.inputOpened = false
     self.outputOpened = false
+    self.queue = DispatchQueue(label: "\(self.address).queue")
     super.init()
   }
   
@@ -84,7 +87,6 @@ class Connection: NSObject {
   }
   
   func read() {
-    let read = inputStream?.hasBytesAvailable
   }
   
   func checkConnection() {
@@ -96,8 +98,10 @@ class Connection: NSObject {
   
   func write(data: Data) {
     guard let os = outputStream, outputOpened else { return }
-    let res = data.withUnsafeBytes {
-      os.write($0, maxLength: data.count)
+    queue.async {
+      _ = data.withUnsafeBytes {
+        os.write($0, maxLength: data.count)
+      }
     }
   }
   
@@ -121,7 +125,9 @@ extension Connection: StreamDelegate {
       case Stream.Event.hasBytesAvailable:
         if let input = inputStream {
           let data = Data(reading: input)
-          delegate?.connection(self, didReceiveData: data)
+          queue.async {
+            self.delegate?.connection(self, didReceiveData: data)
+          }
         }
         
       default:

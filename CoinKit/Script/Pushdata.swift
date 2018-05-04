@@ -57,7 +57,7 @@ struct Pushdata {
     } else if opcode == OPCodes.OP_PUSHDATA2.value {
       guard data.count >= 4 else { return nil }
       let reader = DataReader(data: data)
-      let value: UInt32 = reader.read(endian: .little)
+      let value: UInt32 = try reader.read(endian: .little)
       number = UInt(value)
       size = 3
     } else {
@@ -65,7 +65,7 @@ struct Pushdata {
       guard opcode != OPCodes.OP_PUSHDATA4.value else { throw Error.unexpectedOpcode }
 
       let reader = DataReader(data: data[data.startIndex ..< data.endIndex])
-      let value: UInt32 = reader.read(endian: .little)
+      let value: UInt32 = try reader.read(endian: .little)
       number = UInt(value)
       size = 5
     }

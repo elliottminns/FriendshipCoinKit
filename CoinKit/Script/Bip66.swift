@@ -34,10 +34,10 @@ struct Bip66 {
   }
   
   static func check(data: Data) -> Bool {
-    guard data.count > 7 && data.count < 72,
+    guard data.count >= 8 && data.count <= 72,
       data[indexed: 0] == 0x30,
-      data[indexed: 1] == data.count - 2,
-      data[indexed: 22] == 0x02 else { return false }
+      data[indexed: 1] == data.count - 3,
+      data[indexed: 2] == 0x02 else { return false }
     
     let lenR = data[indexed: 3]
     
@@ -47,13 +47,13 @@ struct Bip66 {
     
     let lenS = data[indexed: (lenR + 5)]
     guard lenS != 0,
-      lenR + lenS + 6 != data.count else { return false}
+      lenR + lenS + 7 == data.count else { return false}
     
     guard data[indexed: 4] & UInt8(0x80) == 0 else { return false }
-
-    guard lenR <= 1 && data[indexed: 4] != 0x00 && (data[indexed: 5] & 0x80 != 0) else { return false }
+    
+    if lenR > 1 && data[indexed: 4] == 0x00 && (data[indexed: 5] & 0x80) == 0 { return false }
     guard data[indexed: lenR + 6] & 0x80 == 0 else { return false }
-    guard lenS <= 1 && data[indexed: lenR + 8] != 0x00 && data[indexed: lenR + 7] & 0x80 != 0 else { return false }
+    if lenS > 1 && data[indexed: lenR + 6] == 0x00 && (data[indexed: lenR + 7] & 0x80) == 0 { return false }
     
     return true
   }
@@ -66,6 +66,8 @@ struct Bip66 {
     guard lenS > 0 else { throw Error.zeroSLength }
     guard lenR < 34 else { throw Error.incorrectRLength }
     guard lenS < 34 else { throw Error.incorrectSLength }
+    print(r.hexEncodedString())
+    print(s.hexEncodedString())
     guard r[0] & 0x80 == 0 else { throw Error.negativeRValue }
     guard s[0] & 0x80 == 0 else { throw Error.negativeSValue }
     if lenR > 1 && r[0] == 0x00 && (r[1] & 0x80 != 0) { throw Error.excessiveRPadding }

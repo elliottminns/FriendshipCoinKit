@@ -36,7 +36,7 @@ struct VersionTemplate: Template {
         buffer[indexed: 0] == OPCodes.OP_DUP.value &&
         buffer[indexed: 1] == OPCodes.OP_HASH160.value &&
         buffer[indexed: 2] == 0x14 &&
-        buffer[indexed: 23] == OPCodes.OP_EQUAL.value &&
+        buffer[indexed: 23] == OPCodes.OP_EQUALVERIFY.value &&
         buffer[indexed: 24] == OPCodes.OP_CHECKSIG.value
     }
   }

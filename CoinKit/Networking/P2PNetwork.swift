@@ -8,6 +8,8 @@
 
 import Foundation
 
+public typealias Magic = UInt32
+
 extension Array {
   func random() -> Element {
     let index = arc4random_uniform(UInt32(count))
@@ -16,11 +18,11 @@ extension Array {
 }
 
 public protocol P2PNetworkDelegate: class {
-  func network(_ network: P2PNetwork, didConnectToPeer peer: Peer)
-  func network(_ network: P2PNetwork, didDisconnectFromPeer peer: Peer)
+  func network<T: Block>(_ network: P2PNetwork<T>, didConnectToPeer peer: Peer)
+  func network<T: Block>(_ network: P2PNetwork<T>, didDisconnectFromPeer peer: Peer)
 }
 
-public class P2PNetwork {
+public class P2PNetwork<T: Block> {
  
   public let parameters: Parameters
   
@@ -36,6 +38,22 @@ public class P2PNetwork {
   
   var connections: [String: Connection] = [:]
   
+  let connectingGroup = DispatchGroup()
+  
+  fileprivate var hasConnected: Bool = false {
+    didSet {
+      if hasConnected && !oldValue {
+        connectingGroup.leave()
+      } else if !hasConnected && oldValue {
+        connectingGroup.enter()
+      }
+    }
+  }
+  
+  var isConnected: Bool {
+    return peers.count > 0
+  }
+  
   fileprivate var messageHandlers: [MessageHandler] = [PingHandler(), VersionHandler()]
   
   public init(parameters: Parameters, options: Options = Options(), hashingAlgorithm: HashingAlgorithm = NeoScrypt(), delegate: P2PNetworkDelegate? = nil) {
@@ -43,11 +61,20 @@ public class P2PNetwork {
     self.options = options
     self.delegate = delegate
     self.hashingAlgorithm = hashingAlgorithm
+    self.connectingGroup.enter()
+//    messageHandlers.append(BlockHandler(hashingAlgorithm: hashingAlgorithm, callback: self.onBlocks))
   }
   
   public func connect() {
     connecting = true
     fillPeers()
+  }
+  
+  public func waitForConnection(callback: @escaping () -> Void) {
+    guard !isConnected else { return callback() }
+    connectingGroup.notify(queue: DispatchQueue.main) {
+      callback()
+    }
   }
   
   public func add(messageHandler handler: MessageHandler) {
@@ -65,26 +92,64 @@ public class P2PNetwork {
   public func createBlockStream() {
   }
   
-  public func getHeaders(locators: [BlockHeader], stop: BlockHeader? = nil) {
-    let lcs = locators.map(hashingAlgorithm.hash(blockHeader:))
+  public func getHeaders(locators: [Data], stop: Data? = nil, callback: @escaping(Result<[BlockHeader]>) -> ()) {
     let peer = peers.random()
-    let stopHash: Data?
     
-    if let stop = stop { stopHash = hashingAlgorithm.hash(blockHeader: stop) }
-    else { stopHash = nil }
-    
-    peer.getHeaders(locator: lcs, stop: stopHash) { (result, peer) in
+    peer.getHeaders(locator: locators, stop: stop) { (result, peer) in
       switch result {
-      case .failure(_): self.getHeaders(locators: locators, stop: stop)
-      case .success(_): break
+      case .failure(let error):
+        if let e = error as? Peer.Error, e == .timeout {
+          self.getHeaders(locators: locators, stop: stop, callback: callback)
+        } else {
+          callback(.failure(error))
+        }
+      case .success(let headers): callback(.success(headers))
       }
     }
   }
   
-  public func get(block hash: String, callback: @escaping () -> Void) {
+  public func getBlockHashes(locators: [Data], callback: @escaping(Result<[Data]>) -> ()) {
+    let peer = peers.random()
+    
+    peer.getBlockHashes(locators: locators) { (result: Result<[Data]>, peer: Peer) in
+      DispatchQueue.main.async {
+        switch result {
+        case .failure(let error):
+          if let e = error as? Peer.Error, e == .timeout {
+            self.getBlockHashes(locators: locators, callback: callback)
+          } else {
+            return callback(result)
+          }
+        case .success(_): callback(result)
+        }
+      }
+    }
+  }
+  
+  public func get(blocks hashes: [Data], callback: @escaping(Result<[T]>) -> ()) {
+    let peer = peers.random()
+
+    peer.get(blocks: hashes) { (result: Result<[T]>, peer: Peer) in
+      DispatchQueue.main.async {
+        switch result {
+        case .failure(let error):
+          if let e = error as? Peer.Error, e == .timeout {
+            self.get(blocks: hashes, callback: callback)
+          } else {
+            callback(.failure(error))
+          }
+        case .success(let blocks): callback(.success(blocks))
+        }
+      }
+    }
+  }
+  
+  
+  public func broadcast<TX: Transaction>(transaction: TX) {
 //    let peer = peers.random()
-//    peer.get(block: hash, callback: callback) { _ in
-//    }
+    peers.forEach { peer in
+      peer.broadcast(transaction: transaction)
+    }
   }
   
   public func get(transactions: [String], callback: @escaping () -> Void) {
@@ -100,7 +165,7 @@ public class P2PNetwork {
 public extension P2PNetwork {
   
   public struct Parameters {
-    public let magic: UInt32
+    public let magic: Magic
     
     public let defaultPort: UInt32
     
@@ -143,6 +208,11 @@ extension P2PNetwork {
     (0 ..< remaining).forEach { _ in connectPeer() }
   }
   
+  func onBlocks(_ block: Result<[T]>, _ peer: Peer) {
+  
+  }
+  
+  
   func connectPeer() {
     if parameters.dnsSeeds.count > 0 {
       connectDNSPeer()
@@ -180,9 +250,12 @@ extension P2PNetwork {
     let connection = Connection(address: address, port: port)
     connections[address] = connection
     connection.connect {
-      let peer = Peer(connection: connection, params: Peer.Params(magic: self.parameters.magic), delegate: self)
+      let params = Peer.Params(magic: self.parameters.magic,
+                               hashingAlgorithm: self.hashingAlgorithm)
+      let peer = Peer(connection: connection, params: params, delegate: self)
       peer.sendVersion()
       self.peers.append(peer)
+      self.hasConnected = true
       self.delegate?.network(self, didConnectToPeer: peer)
     }
   }
@@ -190,7 +263,6 @@ extension P2PNetwork {
 
 extension P2PNetwork: PeerDelegate {
   func peer(_ peer: Peer, didSendMessage message: Message) {
-    print("Recv: \(message.type)")
     let handlers = messageHandlers.filter { $0.handles(message: message) }
     handlers.forEach { $0.handle(message: message, from: peer) }
   }
@@ -199,6 +271,9 @@ extension P2PNetwork: PeerDelegate {
     self.connections[peer.address] = nil
     self.peers = peers.filter {
       return peer.address != $0.address
+    }
+    if self.peers.count == 0 {
+      hasConnected = false
     }
   }
 }

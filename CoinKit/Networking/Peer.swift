@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+typealias TimeoutHandler = (Peer) -> Void
+
 extension Data {
   func chunks(by separator: Data) -> [Data] {
     let data = self
@@ -68,16 +70,17 @@ public class Peer {
   
   public func ping() {
     let command = CommandType.Ping()
-    self.add(handler: command) { _, _ in }
+    self.add(handler: command) { _ in }
     send(command: command)
   }
   
-  func add(handler: MessageHandler, callback: @escaping (Result<Message>, Peer) -> Void) {
+  func add(handler: MessageHandler, timeout: TimeInterval? = nil, onTimeout: @escaping TimeoutHandler) {
+    let tout = timeout ?? options.handshakeTimeout
     let peerHandler = PeerHandler(messageHandler: handler,
                                   delegate: self,
                                   peer: self,
-                                  callback: callback,
-                                  timeout: options.handshakeTimeout)
+                                  timeout: tout,
+                                  onTimeout: onTimeout)
     handlers.insert(peerHandler)
   }
   
@@ -85,6 +88,30 @@ public class Peer {
     let command = CommandType.GetData(inventory: [
       InventoryItem(type: .msgBlock, hash: hash)
       ])
+    send(command: command)
+  }
+  
+  public func get<T: Block>(blocks hashes: [Data], callback: @escaping (Result<[T]>, Peer) -> Void) {
+    let items = hashes.map { InventoryItem(type: .msgBlock, hash: $0)}
+    let command = CommandType.GetData(inventory: items)
+    
+    let handler = BlockHandler(hashes: hashes, hashingAlgorithm: self.params.hashingAlgorithm, callback: callback)
+    add(handler: handler, timeout: 60) { (peer) in
+      callback(.failure(Peer.Error.timeout), peer)
+    }
+    send(command: command)
+  }
+  
+  /**
+   * @title Get the block hashes from the locator array up to the stop hash.
+   *
+   */
+  public func getBlockHashes(locators: [Data], stop: Data? = nil, callback: @escaping (Result<[Data]>, Peer) -> Void) {
+    let command = CommandType.GetBlocks(version: 60010, locators: locators, stopHash: stop)
+    let handler = InventoryHandler(callback: callback)
+    add(handler: handler) { (peer) in
+      callback(.failure(Peer.Error.timeout), peer)
+    }
     send(command: command)
   }
   
@@ -98,12 +125,19 @@ public class Peer {
   }
   
   public func getHeaders(locator: [Data], stop: Data? = nil,
-                         callback: @escaping (Result<Message>, Peer) -> Void) {
+                         callback: @escaping (Result<[BlockHeader]>, Peer) -> Void) {
     let command = CommandType.GetHeaders(version: 60010,
                                          locators: locator,
                                          stopHash: stop)
-    let handler = HeaderHandler()
-    add(handler: handler, callback: callback)
+    let handler = HeaderHandler(hashingAlgorithm: self.params.hashingAlgorithm, locators: locator,  callback: callback)
+    add(handler: handler) { (peer) in
+      callback(.failure(Peer.Error.timeout), peer)
+    }
+    self.send(command: command)
+  }
+  
+  public func broadcast<TX: Transaction>(transaction: TX) {
+    let command = CommandType.Tx(transaction: transaction)
     self.send(command: command)
   }
   
@@ -123,8 +157,6 @@ public class Peer {
     let header = command.header(magic: params.magic)
     let full = header + data
     connection.write(data: full)
-    let title = command.name
-    print("Sent: \(title)")
   }
   
   public func successfulPing(nonce: UInt64) {
@@ -157,7 +189,10 @@ extension Peer: ConnectionDelegate {
     }
     
     messages.forEach(handle(message:))
-    messages.forEach { delegate.peer(self, didSendMessage: $0) }
+    messages.forEach {
+      print($0.type)
+      delegate.peer(self, didSendMessage: $0)
+    }
   }
   
   func connectionDidClose(_ connection: Connection) {
@@ -168,6 +203,8 @@ extension Peer: ConnectionDelegate {
 public extension Peer {
   public struct Params {
     let magic: UInt32
+    
+    let hashingAlgorithm: HashingAlgorithm
   }
   
   public struct Options {
@@ -182,7 +219,7 @@ public extension Peer {
     public let pingInterval: TimeInterval
     
     public init(relay: Bool = false, requireBloom: Bool = true,
-                handshakeTimeout: TimeInterval = 8.0, pingInterval: TimeInterval = 15.0) {
+                handshakeTimeout: TimeInterval = 15.0, pingInterval: TimeInterval = 60.0) {
       self.relay = relay
       self.requireBloom = requireBloom
       self.userAgent = "/iOS:11.3/CoinKit:1.0"
@@ -194,6 +231,10 @@ public extension Peer {
 
 extension Peer: PeerHandlerDelegate {
   func peerHandlerDidTimeout(handler: PeerHandler) {
-    
+    handlers.remove(handler)
+  }
+  
+  func peerHandlerDidHandle(handler: PeerHandler) {
+    handlers.remove(handler)
   }
 }

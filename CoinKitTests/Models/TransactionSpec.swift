@@ -236,7 +236,7 @@ class TransactionSpec: QuickSpec {
       describe(fixture.description) {
         context("creating from transaction hex") {
           
-          let transaction = try! Transaction(hex: fixture.hex)
+          let transaction = try! BitcoinTransaction(hex: fixture.hex)
           
           it("should calculate the correct weight") {
             expect(transaction.weight) == fixture.weight

@@ -32,8 +32,8 @@ struct ECSignature {
   
   init(data: Data) {
     self.data = data
-    self.r = BInt(data: Data(data[data.startIndex + 0 ..< data.startIndex + 32])) ?? BInt(0)
-    self.s = BInt(data: Data(data[data.startIndex + 32 ..< data.startIndex + 64])) ?? BInt(0)
+    self.r = BInt(data: Data(data[data.startIndex + 4 ..< data.startIndex + 36])) ?? BInt(0)
+    self.s = BInt(data: Data(data[data.startIndex + 38 ..< data.startIndex + 70])) ?? BInt(0)
   }
   
   func toScriptSignature(hashType: UInt8) throws -> Data {
@@ -42,7 +42,7 @@ struct ECSignature {
     
     let buffer = Data([hashTypeMod])
     
-    return try toDER() + buffer
+    return data + buffer //try //toDER() + buffer
   }
   
   func toDER() throws -> Data {

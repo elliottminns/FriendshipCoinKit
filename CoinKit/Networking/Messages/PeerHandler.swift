@@ -10,40 +10,44 @@ import Foundation
 
 protocol PeerHandlerDelegate: class {
   func peerHandlerDidTimeout(handler: PeerHandler)
+  func peerHandlerDidHandle(handler: PeerHandler)
 }
 
-struct PeerHandler: Hashable, MessageHandler {
-  
+extension Peer {
   enum Error: Swift.Error {
     case timeout
   }
+}
+
+class PeerHandler: Hashable, MessageHandler {
   
   let id: UUID
   
   let handler: MessageHandler
   
-  let callback: (Result<Message>, Peer) -> Void
+  let timeoutHandler: TimeoutHandler
   
   unowned let delegate: PeerHandlerDelegate
   
   var hashValue: Int { return id.hashValue }
   
-  let timer: Timer
+  var timer: Timer?
   
   unowned let peer: Peer
   
   init(messageHandler: MessageHandler,
        delegate: PeerHandlerDelegate,
        peer: Peer,
-       callback: @escaping (Result<Message>, Peer) -> Void,
-       timeout: TimeInterval) {
+       timeout: TimeInterval,
+       onTimeout timeoutHandler: @escaping TimeoutHandler) {
     self.id = UUID()
     self.delegate = delegate
     self.handler = messageHandler
-    self.callback = callback
+    self.timeoutHandler = timeoutHandler
     self.peer = peer
     timer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false, block: { _ in
-      callback(.failure(Error.timeout), peer)
+      timeoutHandler(peer)
+      delegate.peerHandlerDidTimeout(handler: self)
     })
   }
 
@@ -53,15 +57,14 @@ struct PeerHandler: Hashable, MessageHandler {
   
   func handles(message: Message) -> Bool {
     let handles = handler.handles(message: message)
-    print("HANDLE : \(message.type) - \(handles)")
-    if handles {
-      timer.invalidate()
-    }
     return handles
   }
   
   func handle(message: Message, from peer: Peer) {
     handler.handle(message: message, from: peer)
-    callback(.success(message), peer)
+    if handler.isFinished || timer?.isValid == false {
+      timer?.invalidate()
+      delegate.peerHandlerDidHandle(handler: self)
+    }
   }
 }
