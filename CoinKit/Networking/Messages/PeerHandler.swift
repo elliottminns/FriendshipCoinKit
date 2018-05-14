@@ -33,6 +33,8 @@ class PeerHandler: Hashable, MessageHandler {
   
   var timer: Timer?
   
+  var timedOut: Bool = false
+  
   unowned let peer: Peer
   
   init(messageHandler: MessageHandler,
@@ -46,6 +48,7 @@ class PeerHandler: Hashable, MessageHandler {
     self.timeoutHandler = timeoutHandler
     self.peer = peer
     timer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false, block: { _ in
+      self.timedOut = true
       timeoutHandler(peer)
       delegate.peerHandlerDidTimeout(handler: self)
     })
@@ -56,11 +59,13 @@ class PeerHandler: Hashable, MessageHandler {
   }
   
   func handles(message: Message) -> Bool {
+    guard !timedOut else { return false }
     let handles = handler.handles(message: message)
     return handles
   }
   
   func handle(message: Message, from peer: Peer) {
+    guard !timedOut else { return }
     handler.handle(message: message, from: peer)
     if handler.isFinished || timer?.isValid == false {
       timer?.invalidate()

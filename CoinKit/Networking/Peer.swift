@@ -52,6 +52,8 @@ public class Peer {
   
   var buffer: Data = Data()
   
+  var pingTimer: Timer?
+  
   fileprivate(set) var handlers: Set<PeerHandler> = []
   
   unowned let delegate: PeerDelegate
@@ -66,11 +68,16 @@ public class Peer {
     self.options = options
     self.delegate = delegate
     self.connection.delegate = self
+    self.pingTimer = Timer(timeInterval: options.pingInterval, repeats: true, block: { timer in
+      self.ping()
+    })
   }
   
   public func ping() {
     let command = CommandType.Ping()
-    self.add(handler: command) { _ in }
+    self.add(handler: command) { _ in
+      self.delegate.peerDidDisconnect(self)
+    }
     send(command: command)
   }
   
@@ -124,13 +131,18 @@ public class Peer {
     
   }
   
+  public func getAddresses() {
+    let command = CommandType.GetAddr()
+    self.send(command: command)
+  }
+  
   public func getHeaders(locator: [Data], stop: Data? = nil,
                          callback: @escaping (Result<[BlockHeader]>, Peer) -> Void) {
     let command = CommandType.GetHeaders(version: 60010,
                                          locators: locator,
                                          stopHash: stop)
     let handler = HeaderHandler(hashingAlgorithm: self.params.hashingAlgorithm, locators: locator,  callback: callback)
-    add(handler: handler) { (peer) in
+    add(handler: handler, timeout: 60) { (peer) in
       callback(.failure(Peer.Error.timeout), peer)
     }
     self.send(command: command)
@@ -166,6 +178,11 @@ public class Peer {
     }
   }
   
+  func close() {
+    self.connection.close()
+    self.pingTimer?.invalidate()
+  }
+  
   func handle(message: Message) {
     let h = handlers.filter { $0.handles(message: message) }
     h.forEach { $0.handle(message: message, from: self) }
@@ -188,10 +205,19 @@ extension Peer: ConnectionDelegate {
       return message
     }
     
+    let ignoreTypes: Set<String> = ["dseep", "ping", "pong", "version", "verack", "smsgPing"]
+    
     messages.forEach(handle(message:))
-    messages.forEach {
-      print($0.type)
-      delegate.peer(self, didSendMessage: $0)
+    messages.forEach { message in
+      
+      if !ignoreTypes.contains(message.type) {
+        if message.type == "inv" {
+          print(message.value.hexEncodedString())
+        }
+//        print(message.type)
+      }
+      
+      delegate.peer(self, didSendMessage: message)
     }
   }
   

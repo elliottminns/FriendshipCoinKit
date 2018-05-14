@@ -91,6 +91,12 @@
 		4F5816712084F7B900939306 /* OPCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5816702084F7B900939306 /* OPCodes.swift */; };
 		4F5816762085188400939306 /* TransactionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5816752085188400939306 /* TransactionSpec.swift */; };
 		4F84E5CA206E9B13001CD456 /* PaymentURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F84E5C9206E9B13001CD456 /* PaymentURI.swift */; };
+		4F8FC8EB209D0EB60007FA1F /* GetAddr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8FC8EA209D0EB60007FA1F /* GetAddr.swift */; };
+		4F8FC8ED209D15580007FA1F /* AddrHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8FC8EC209D15580007FA1F /* AddrHandler.swift */; };
+		4F8FC8EF209D166C0007FA1F /* Addr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8FC8EE209D166C0007FA1F /* Addr.swift */; };
+		4F8FC8F2209D1E220007FA1F /* Timestamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8FC8F1209D1E220007FA1F /* Timestamped.swift */; };
+		4F997105209FB840001E8191 /* ChainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F997104209FB840001E8191 /* ChainItem.swift */; };
+		4F997107209FB855001E8191 /* Array+ChainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F997106209FB855001E8191 /* Array+ChainItem.swift */; };
 		4FA05BFC208F795E00C952E7 /* VersionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA05BFB208F795E00C952E7 /* VersionHandler.swift */; };
 		4FA05BFE208F798500C952E7 /* Verack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA05BFD208F798500C952E7 /* Verack.swift */; };
 		4FA05C01208F8D7000C952E7 /* ClosureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA05C00208F8D7000C952E7 /* ClosureHandler.swift */; };
@@ -220,6 +226,13 @@
 		4F5816702084F7B900939306 /* OPCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPCodes.swift; sourceTree = "<group>"; };
 		4F5816752085188400939306 /* TransactionSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSpec.swift; sourceTree = "<group>"; };
 		4F84E5C9206E9B13001CD456 /* PaymentURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentURI.swift; sourceTree = "<group>"; };
+		4F8FC8E8209D05FE0007FA1F /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		4F8FC8EA209D0EB60007FA1F /* GetAddr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAddr.swift; sourceTree = "<group>"; };
+		4F8FC8EC209D15580007FA1F /* AddrHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddrHandler.swift; sourceTree = "<group>"; };
+		4F8FC8EE209D166C0007FA1F /* Addr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Addr.swift; sourceTree = "<group>"; };
+		4F8FC8F1209D1E220007FA1F /* Timestamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamped.swift; sourceTree = "<group>"; };
+		4F997104209FB840001E8191 /* ChainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainItem.swift; sourceTree = "<group>"; };
+		4F997106209FB855001E8191 /* Array+ChainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ChainItem.swift"; sourceTree = "<group>"; };
 		4FA05BFB208F795E00C952E7 /* VersionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionHandler.swift; sourceTree = "<group>"; };
 		4FA05BFD208F798500C952E7 /* Verack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verack.swift; sourceTree = "<group>"; };
 		4FA05C00208F8D7000C952E7 /* ClosureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureHandler.swift; sourceTree = "<group>"; };
@@ -310,6 +323,7 @@
 		4F1D9D2B206818BC0065E3EF /* CoinKit */ = {
 			isa = PBXGroup;
 			children = (
+				4F8FC8F0209D1E160007FA1F /* Protocols */,
 				4F384557209214EE0078EDF6 /* Stores */,
 				4F3D757E2090FF43005A9091 /* Hashing */,
 				4F328717208FEF1700CCCDC4 /* Blockchain */,
@@ -349,6 +363,7 @@
 				4F2CABAF206A74120016B62F /* Data+Bytes.swift */,
 				4F4873682086296A001DB20F /* Data+Append.swift */,
 				4FB8C714208BBA9C005F7D8E /* Data+Crypto.swift */,
+				4F997106209FB855001E8191 /* Array+ChainItem.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -391,6 +406,7 @@
 				4F384586209230B00078EDF6 /* Block.swift */,
 				4F13EB8E20926483005F927A /* Transaction.swift */,
 				4FB49AA72099C031000E04B6 /* TransactionBuilder.swift */,
+				4F8FC8EE209D166C0007FA1F /* Addr.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -463,6 +479,7 @@
 				4F38455B209215BD0078EDF6 /* Store.h */,
 				4F38457D209216BC0078EDF6 /* BlockStore.swift */,
 				4F38457F20921D120078EDF6 /* HeaderStore.swift */,
+				4F8FC8E8209D05FE0007FA1F /* Store.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -578,6 +595,15 @@
 			path = Fixtures;
 			sourceTree = "<group>";
 		};
+		4F8FC8F0209D1E160007FA1F /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				4F8FC8F1209D1E220007FA1F /* Timestamped.swift */,
+				4F997104209FB840001E8191 /* ChainItem.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		4FA1E622208D934C00816CE2 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -605,6 +631,7 @@
 				4F328721208FFB4400CCCDC4 /* GetHeaders.swift */,
 				4F38458120921DC30078EDF6 /* GetBlocks.swift */,
 				4F06CF24209A18CD0035843B /* Tx.swift */,
+				4F8FC8EA209D0EB60007FA1F /* GetAddr.swift */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -630,6 +657,7 @@
 				4F3D757A2090CAD6005A9091 /* HeaderHandler.swift */,
 				4F38458420921E830078EDF6 /* BlockHandler.swift */,
 				4F4BE4DC20965FC600F484AC /* InventoryHandler.swift */,
+				4F8FC8EC209D15580007FA1F /* AddrHandler.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -781,6 +809,7 @@
 				4F1D9D66206819500065E3EF /* WordList.swift in Sources */,
 				4FA05BFE208F798500C952E7 /* Verack.swift in Sources */,
 				4FC4ED23208F634900A7E848 /* SmsgPong.swift in Sources */,
+				4F8FC8F2209D1E220007FA1F /* Timestamped.swift in Sources */,
 				4FA05C01208F8D7000C952E7 /* ClosureHandler.swift in Sources */,
 				4F1AEA74208D0942005C49EE /* Signable.swift in Sources */,
 				4F1D9D7A20681DA50065E3EF /* ECPair.swift in Sources */,
@@ -806,7 +835,9 @@
 				4FB8C713208BB09A005F7D8E /* Bip66.swift in Sources */,
 				4F5816682084F4B200939306 /* Template.swift in Sources */,
 				4F3D758B2091106D005A9091 /* SHA256.swift in Sources */,
+				4F8FC8ED209D15580007FA1F /* AddrHandler.swift in Sources */,
 				4F38458220921DC30078EDF6 /* GetBlocks.swift in Sources */,
+				4F8FC8EF209D166C0007FA1F /* Addr.swift in Sources */,
 				4F2CAB7F206938DD0016B62F /* Secp256k1.swift in Sources */,
 				4F5816712084F7B900939306 /* OPCodes.swift in Sources */,
 				4F2CAB8B206950480016B62F /* Base58.swift in Sources */,
@@ -814,6 +845,7 @@
 				4F4873652085625D001DB20F /* TransactionOutput.swift in Sources */,
 				4FA1E63A208E4BF200816CE2 /* NetworkConstants.swift in Sources */,
 				4F3D75802090FF53005A9091 /* HashingAlgorithm.swift in Sources */,
+				4F997107209FB855001E8191 /* Array+ChainItem.swift in Sources */,
 				4FB8C715208BBA9C005F7D8E /* Data+Crypto.swift in Sources */,
 				4F58166F2084F6FB00939306 /* Script.swift in Sources */,
 				4F58166C2084F59700939306 /* VersionTemplate.swift in Sources */,
@@ -823,12 +855,14 @@
 				4FB49A992098B44E000E04B6 /* PublicKeyTemplate.swift in Sources */,
 				4FC4ED16208ED2D800A7E848 /* MessageHandler.swift in Sources */,
 				4FA1E61F208D835600816CE2 /* P2PNetwork.swift in Sources */,
+				4F997105209FB840001E8191 /* ChainItem.swift in Sources */,
 				4F3D758820910035005A9091 /* NeoScrypt.swift in Sources */,
 				4F3D75862090FFD6005A9091 /* neoscrypt.c in Sources */,
 				4F3D757B2090CAD6005A9091 /* HeaderHandler.swift in Sources */,
 				4F13EB8F20926483005F927A /* Transaction.swift in Sources */,
 				4F06CF25209A18CD0035843B /* Tx.swift in Sources */,
 				4F384587209230B00078EDF6 /* Block.swift in Sources */,
+				4F8FC8EB209D0EB60007FA1F /* GetAddr.swift in Sources */,
 				4FC4ED19208EDA6800A7E848 /* PingHandler.swift in Sources */,
 				4FB8C711208B9DD6005F7D8E /* ScriptType.swift in Sources */,
 				4FC4ED1B208EDFD900A7E848 /* SmsgPingHandler.swift in Sources */,

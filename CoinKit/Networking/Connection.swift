@@ -28,12 +28,16 @@ extension Data {
 
 class Connection: NSObject {
   
+  enum Error: Swift.Error {
+    case somethingWentWrong
+  }
+  
   fileprivate var inputStream: InputStream?
   fileprivate var outputStream: OutputStream?
   
   let queue: DispatchQueue
   
-  var callback: (() -> Void)?
+  var callback: ((Result<Void>) -> Void)?
   
   var delegate: ConnectionDelegate?
   
@@ -62,7 +66,7 @@ class Connection: NSObject {
     super.init()
   }
   
-  func connect(callback: @escaping () -> Void) {
+  func connect(callback: @escaping (Result<Void>) -> Void) {
     self.callback = callback
     
     Stream.getStreamsToHost(withName: address,
@@ -89,10 +93,24 @@ class Connection: NSObject {
   func read() {
   }
   
+  func close() {
+    self.inputStream?.close()
+    self.outputStream?.close()
+    self.delegate?.connectionDidClose(self)
+  }
+  
   func checkConnection() {
     guard inputOpened && outputOpened, let callback = callback else { return }
     DispatchQueue.main.async {
-      callback()
+      callback(.success(Void()))
+    }
+  }
+  
+  func on(error: Swift.Error) {
+    if !inputOpened || !outputOpened {
+      DispatchQueue.main.async {
+        self.callback?(.failure(error))
+      }
     }
   }
   
@@ -104,12 +122,6 @@ class Connection: NSObject {
       }
     }
   }
-  
-  func close() {
-    inputStream?.close()
-    outputStream?.close()
-    delegate?.connectionDidClose(self)
-  }
 }
 
 extension Connection: StreamDelegate {
@@ -117,7 +129,7 @@ extension Connection: StreamDelegate {
     if aStream === inputStream {
       switch eventCode {
       case Stream.Event.errorOccurred:
-        print("input: ErrorOccurred: \(aStream.streamError?.localizedDescription ?? "")")
+        self.on(error: aStream.streamError ?? Error.somethingWentWrong)
       case Stream.Event.openCompleted:
         inputOpened = true
       case Stream.Event.endEncountered:
@@ -137,7 +149,7 @@ extension Connection: StreamDelegate {
     else if aStream === outputStream {
       switch eventCode {
       case Stream.Event.errorOccurred:
-        print("output: ErrorOccurred: \(aStream.streamError?.localizedDescription ?? "")")
+        self.on(error: aStream.streamError ?? Error.somethingWentWrong)
       case Stream.Event.openCompleted:
         outputOpened = true
       case Stream.Event.hasSpaceAvailable: break

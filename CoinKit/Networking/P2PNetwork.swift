@@ -54,6 +54,8 @@ public class P2PNetwork<T: Block> {
     return peers.count > 0
   }
   
+  fileprivate var connectionCountTimer: Timer? = nil
+  
   fileprivate var messageHandlers: [MessageHandler] = [PingHandler(), VersionHandler()]
   
   public init(parameters: Parameters, options: Options = Options(), hashingAlgorithm: HashingAlgorithm = NeoScrypt(), delegate: P2PNetworkDelegate? = nil) {
@@ -62,12 +64,19 @@ public class P2PNetwork<T: Block> {
     self.delegate = delegate
     self.hashingAlgorithm = hashingAlgorithm
     self.connectingGroup.enter()
+    self.messageHandlers.append(AddrHandler(delegate: self))
 //    messageHandlers.append(BlockHandler(hashingAlgorithm: hashingAlgorithm, callback: self.onBlocks))
   }
   
   public func connect() {
     connecting = true
     fillPeers()
+    self.connectionCountTimer?.invalidate()
+    self.connectionCountTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { _ in
+      if self.isConnected && self.peers.count < self.options.numberPeers {
+        self.getAddresses()
+      }
+    })
   }
   
   public func waitForConnection(callback: @escaping () -> Void) {
@@ -93,17 +102,26 @@ public class P2PNetwork<T: Block> {
   }
   
   public func getHeaders(locators: [Data], stop: Data? = nil, callback: @escaping(Result<[BlockHeader]>) -> ()) {
-    let peer = peers.random()
-    
-    peer.getHeaders(locator: locators, stop: stop) { (result, peer) in
-      switch result {
-      case .failure(let error):
-        if let e = error as? Peer.Error, e == .timeout {
-          self.getHeaders(locators: locators, stop: stop, callback: callback)
-        } else {
-          callback(.failure(error))
+    waitForConnection {
+      var called: Bool = false
+
+      let peer = self.peers.random()
+        
+      peer.getHeaders(locator: locators, stop: stop) { (result, peer) in
+        guard !called else { return }
+        called = true
+        DispatchQueue.main.async {
+          switch result {
+          case .failure(let error):
+            if let e = error as? Peer.Error, e == .timeout {
+              self.getHeaders(locators: locators, stop: stop, callback: callback)
+            } else {
+              callback(.failure(error))
+            }
+          case .success(let headers):
+            callback(.success(headers))
+          }
         }
-      case .success(let headers): callback(.success(headers))
       }
     }
   }
@@ -146,10 +164,14 @@ public class P2PNetwork<T: Block> {
   
   
   public func broadcast<TX: Transaction>(transaction: TX) {
-//    let peer = peers.random()
     peers.forEach { peer in
       peer.broadcast(transaction: transaction)
     }
+  }
+  
+  public func getAddresses() {
+    let peer = peers.random()
+    peer.getAddresses()
   }
   
   public func get(transactions: [String], callback: @escaping () -> Void) {
@@ -212,7 +234,6 @@ extension P2PNetwork {
   
   }
   
-  
   func connectPeer() {
     if parameters.dnsSeeds.count > 0 {
       connectDNSPeer()
@@ -249,14 +270,19 @@ extension P2PNetwork {
     guard connections[address] == nil else { return }
     let connection = Connection(address: address, port: port)
     connections[address] = connection
-    connection.connect {
-      let params = Peer.Params(magic: self.parameters.magic,
-                               hashingAlgorithm: self.hashingAlgorithm)
-      let peer = Peer(connection: connection, params: params, delegate: self)
-      peer.sendVersion()
-      self.peers.append(peer)
-      self.hasConnected = true
-      self.delegate?.network(self, didConnectToPeer: peer)
+    connection.connect { result in
+      switch result {
+      case .success(_):
+        let params = Peer.Params(magic: self.parameters.magic,
+                                 hashingAlgorithm: self.hashingAlgorithm)
+        let peer = Peer(connection: connection, params: params, delegate: self)
+        peer.sendVersion()
+        self.peers.append(peer)
+        self.hasConnected = true
+        self.delegate?.network(self, didConnectToPeer: peer)
+      case .failure(_):
+        self.connectPeer()
+      }
     }
   }
 }
@@ -274,6 +300,25 @@ extension P2PNetwork: PeerDelegate {
     }
     if self.peers.count == 0 {
       hasConnected = false
+    }
+    
+    fillPeers()
+  }
+}
+
+extension P2PNetwork: AddrHandlerDelegate {
+  func handler(_ handler: AddrHandler, didReceiveAddrs addrs: [Addr]) {
+    let timeDelta: TimeInterval = 60 * 60 * 12
+    let earliest = Date(timeIntervalSinceNow: -timeDelta)
+
+    let fresh = addrs.filter { $0.date > earliest }
+    
+    let missing = Int(options.numberPeers) - peers.count
+    
+    guard missing > 0 else { return }
+    (0 ..< missing).forEach { _ in
+      let addr = fresh.random()
+      self.connectStream(address: addr.address)
     }
   }
 }

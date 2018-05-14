@@ -8,9 +8,9 @@
 
 import Foundation
 
-public struct BrokenChainError: Swift.Error {
-  public let a: BlockHeader
-  public let b: BlockHeader
+public struct BrokenChainError<T>: Swift.Error {
+  public let a: T
+  public let b: T
 }
 
 public struct BrokenChainBlockError<T: Block>: Swift.Error {
@@ -20,8 +20,15 @@ public struct BrokenChainBlockError<T: Block>: Swift.Error {
 
 open class Blockchain<T: Block> {
   
-  enum Error: Swift.Error {
+  public struct BrokenChainError<T>: Swift.Error {
+    public let a: T
+    public let b: T
+  }
+
+  
+  public enum Error: Swift.Error {
     case chainBroken
+    case notFound
   }
   
   public let genesis: T
@@ -32,14 +39,24 @@ open class Blockchain<T: Block> {
   
   public fileprivate(set) var headers: [BlockHeader] = []
   
-  public fileprivate(set) var blocks: [T] = []
-  
-  public var tip: BlockHeader {
-    return store.getTop()?.header ?? genesis.header
+  public fileprivate(set) var blocks: [T] {
+    set {
+      mainChain = newValue
+    }
+    
+    get {
+      return mainChain
+    }
   }
   
-  public var top: T {
-    return store.getTop() ?? genesis
+  public fileprivate(set) var mainChain: [T] = []
+  
+  public fileprivate(set) var orphans: [[T]] = []
+  
+  public fileprivate(set) var forks: [[T]] = []
+  
+  public var tip: T {
+    return mainChain.last ?? store.getTip() ?? genesis
   }
   
   public init(genesis: T, hashingAlgorithm: HashingAlgorithm) {
@@ -50,54 +67,93 @@ open class Blockchain<T: Block> {
   }
   
   func loadStored() {
-    if let header = store.getTop()?.header {
-      headers.append(header)
+    if let tip = store.getTip() {
+      mainChain.append(tip)
+      headers.append(tip.header)
     }
-  }
-  
-  public func missingBlocks() -> [BlockHeader] {
-    return store.getMissingBlocks()
-  }
-  
-  public func missingBlocks(callback: @escaping ([BlockHeader]) -> Void) {
-    DispatchQueue.global().async {
-      let blocks = self.missingBlocks()
-      DispatchQueue.main.async {
-        return callback(blocks)
-      }
-    }
-  }
-  
-  public func add(headers: [BlockHeader]) throws {
-    let last = tip
-    do {
-      try check(headers: [last] + headers)
-      let start = store.getHeight() + 1
-      self.headers = headers
-      /*
-      store.write(headers: headers.enumerated().map { obj -> (index: Int, header: BlockHeader) in
-        return (index: obj.offset + start, header: obj.element)
-      })
- */
-    } catch let error {
-      guard last != genesis.header else { throw error }
-      self.removeTip()
-      throw error
-    }
-  }
-  
-  public func removeTip() {
-    store.removeTip()
   }
   
   public func add(block: T) {
     store.write(block: block)
+    mainChain.append(block)
+    checkOrphans()
   }
   
-  public func add(blocks: [T]) throws {
-    let last = top
-    try check(blocks: blocks, from: last)
-    blocks.forEach { store.write(block: $0) }
+  public func add(blocks: [T]) {
+    guard blocks.count > 0 else { return }
+    
+    let first = blocks[0]
+    
+    guard let parent = store.block(for: first.previousHash) else {
+      if blocks.isContinous {
+        self.add(orphans: blocks)
+      } else {
+        
+      }
+      return
+    }
+    
+    if parent != tip {
+      store.set(best: parent.data)
+      while mainChain.count > 0 && mainChain.last != parent {
+        _ = mainChain.popLast()
+      }
+    }
+    
+    if blocks.isContinous {
+      blocks.forEach { block in
+        store.write(block: block)
+        mainChain.append(block)
+      }
+      checkOrphans()
+    } else {
+      blocks.forEach(add(block:))
+    }
+  }
+  
+  public func add(orphans: [T]) {
+    self.orphans.append(orphans)
+  }
+  
+  public func checkOrphans() {
+    let tip = self.tip
+    let matching = orphans.filter { orphanChain in
+      guard let first = orphanChain.first else { return false }
+      return first.previousHash == tip.hash
+    }
+    
+    let longest = matching.max { (a, b) -> Bool in
+      return a.count > b.count
+    }
+    
+    guard let longestChain = longest else { return }
+    self.orphans = orphans.filter { chain in
+      guard let first = chain.first else { return false }
+      return first.previousHash != tip.hash
+    }
+    self.add(blocks: longestChain)
+  }
+  
+  public func block(at index: Int) -> T? {
+    if index < 0 {
+      return self.block(fromTip: -index)
+    } else if index == 0 {
+      return self.genesis
+    } else {
+      fatalError("Not yet implemented")
+    }
+  }
+  
+  fileprivate func block(fromTip number: Int) -> T? {
+    let tip = self.tip
+    return block(from: tip, by: number)
+  }
+  
+  func block(from block: T, by number: Int) -> T? {
+    guard block != self.genesis else { return nil }
+    guard number != 0 else { return block }
+    guard let previous = self.store.block(for: block.previousHash) else { return nil }
+    return self.block(from: previous, by: number - 1)
   }
   
   public func header(at index: Int) -> BlockHeader? {
@@ -107,21 +163,43 @@ open class Blockchain<T: Block> {
       return store.header(at: index)
     } else {
       return store.header(at: self.store.getHeight() + index)
-    }
-    */
+    }*/
   }
   
   public func block(with hash: Data) -> T? {
     return store.block(for: hash)
   }
   
+  public func moveTop(to hash: Data) throws {
+    guard let block = self.block(with: hash) else { throw Error.notFound }
+    var currentTop = self.tip
+    var count = 0
+    while currentTop != block && currentTop != genesis {
+      guard let next = self.block(with: currentTop.previousHash) else {
+        throw Error.notFound
+      }
+      count = count + 1
+      currentTop = next
+    }
+    
+    self.store.set(height: count)
+    self.store.set(best: hash)
+  }
+  
   func check(blocks: [T], from: T) throws {
-    let trimmed = blocks.enumerated().filter { (item) -> Bool in
+   try check(blocks: [from] + blocks)
+  }
+  
+  func check(blocks: [T]) throws {
+    let trimmed = try blocks.enumerated().filter { item -> Bool in
+      guard item.offset > 0 else { return true }
+      
       let index = item.offset
       let block = item.element
-      let previous = item.offset > 0 ? blocks[index - 1] : from
+      let previous = blocks[index - 1]
       let previousHash = previous.hash
       let inline = previousHash == block.previousHash
+      if !inline { throw BrokenChainError(a: previous, b: block) }
       return inline
       }.map { $0.element }
     if trimmed.count != blocks.count {

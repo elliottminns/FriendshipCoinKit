@@ -8,23 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
 @interface Store : NSObject
 
--(instancetype)initWithDBName:(nonnull NSString *) dbName;
+-(nonnull instancetype)initWithDBName:(nonnull NSString *) dbName;
 
--(NSString *)get:(NSString *)key;
+-(nonnull NSString *)get:(nonnull NSString *)key;
 
--(bool)put:(NSString *)key value:(NSString *)value;
+-(bool)put:(nonnull NSString *)key value:(nonnull NSString *)value;
 
--(bool)delete:(NSString *)key;
+-(bool)delete:(nonnull NSString *)key;
 
--(bool)deleteBatch:(NSArray *)keys;
+-(bool)deleteBatch:(nonnull NSArray *)keys;
 
--(NSArray *)iterate:(NSString *)key;
+-(nonnull NSArray *)iterate:(nonnull NSString *)key;
 
 -(void)close;
 
 @end
-
-NS_ASSUME_NONNULL_END

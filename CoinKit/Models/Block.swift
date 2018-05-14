@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol Block: Hashable {
+public protocol Block: ChainItem {
   
   associatedtype TransactionType: Transaction
   
@@ -31,6 +31,8 @@ public protocol Block: Hashable {
   var transactions: [TransactionType] { get }
   
   init(data: Data) throws
+  
+  init(data: Data, hash: Data) throws
 }
 
 extension Block {

@@ -80,3 +80,13 @@ extension BlockHeader: Equatable {
     return lhs.hash == rhs.hash
   }
 }
+
+extension BlockHeader: Hashable {
+  public var hashValue: Int { return hash.hashValue }
+}
+
+extension BlockHeader: ChainItem {
+  public var previousHash: Data {
+    return prevHash
+  }
+}

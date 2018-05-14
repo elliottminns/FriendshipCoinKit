@@ -1,3 +1,2 @@
 github "soffes/Crypto" "v0.5.4"
 github "attaswift/BigInt" ~> 3.0
-github "hemantasapkota/SwiftStore"

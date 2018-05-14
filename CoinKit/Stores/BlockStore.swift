@@ -14,21 +14,11 @@ class BlockStore<T: Block> {
   let queue: DispatchQueue = DispatchQueue(label: "com.block.chain.queue")
   
   let hashingAlgorithm: HashingAlgorithm
-  /*
-  init(genesis: BlockHeader, hashingAlgorithm: HashingAlgorithm) {
-    db = Store(dbName: "block.chain")
-    self.hashingAlgorithm = hashingAlgorithm
-    
-    if db.get("top").isEmpty {
-      db.put("top", value: "0")
-      write(headers: [(height: 0 , header: genesis)])
-    }
-  }
-  */
+  
   init(genesis: T, hashingAlgorithm: HashingAlgorithm) {
     db = Store(dbName: "block.chain")
     self.hashingAlgorithm = hashingAlgorithm
-    
+
     if db.get("top").isEmpty {
       db.put("top", value: "0")
       write(block: genesis)
@@ -77,13 +67,33 @@ class BlockStore<T: Block> {
     return (height: headerHeight, header: header, next: next)
   }
   */
+  
+  func write(block: T, best: Bool = false, index: Int?) {
+    queue.async {
+      let key = block.hash.base64EncodedString()
+      self.db.put(key, value: block.data.base64EncodedString())
+      
+      if best { self.db.put("best", value: key) }
+      if let index = index {
+        let indexString = "\(index)"
+        self.db.put(indexString, value: key)
+        
+        let count = Int(self.db.get("blockcount")) ?? 0
+        if count < index {
+          self.db.put("blockcount", value: indexString)
+        }
+      }
+    }
+  }
+  
   func write(block: T) {
     queue.async {
       let key = block.hash.base64EncodedString()
       let exists = !self.db.get(key).isEmpty
       self.db.put(key, value: block.data.base64EncodedString())
-      self.db.put("best", value: key)
+
       if !exists {
+        self.db.put("best", value: key)
         let count = Int(self.db.get("blockcount")) ?? 0
         self.db.put("\(count)", value: key)
         self.db.put("blockcount", value: "\(count + 1)")
@@ -99,11 +109,16 @@ class BlockStore<T: Block> {
   
   func set(height: Int) {
     return queue.sync {
-      self.db.put("top", value: "\(height)")
+      self.db.put("blockcount", value: "\(height)")
     }
   }
   
-  func getTop() -> T? {
+  func set(best hash: Data) {
+    let key = hash.base64EncodedString()
+    self.db.put("best", value: key)
+  }
+  
+  func getTip() -> T? {
     return queue.sync {
       let count = Int(self.db.get("blockcount")) ?? 1
       let key = self.db.get("\(count - 1)")
@@ -139,9 +154,10 @@ class BlockStore<T: Block> {
     guard let data = Data(base64Encoded: dataStr), data.count > 0 else {
       return nil
     }
-    let block = try? T.init(data: data)
+    let block = try? T.init(data: data, hash: hash)
     return block
   }
+  
   /*
   func header(at height: Int) -> BlockHeader? {
     let key = self.db.get("\(height)")
@@ -200,21 +216,5 @@ class BlockStore<T: Block> {
     }
     
     return blocks*/
-  }
-  
-  func removeTip() {
-    let height = self.getHeight()
-    guard let top = self.getTop() else { return }
-    queue.sync {
-      let key = top.hash.hexEncodedString()
-      self.db.delete(key)
-      
-      let count = Int(self.db.get("blockcount")) ?? 1
-      self.db.put("blockcount", value: "\(count - 1)")
-      
-      print("Delete: \(count)")
-    }
-    
-    self.set(height: height - 1)
   }
 }
