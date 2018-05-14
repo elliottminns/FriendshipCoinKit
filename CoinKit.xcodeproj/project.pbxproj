@@ -52,21 +52,6 @@
 		4F32871D208FF48800CCCDC4 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F32871C208FF48800CCCDC4 /* Header.swift */; };
 		4F328722208FFB4400CCCDC4 /* GetHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F328721208FFB4400CCCDC4 /* GetHeaders.swift */; };
 		4F38455A209215AB0078EDF6 /* Store.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F384559209215AB0078EDF6 /* Store.mm */; };
-		4F38456E2092163D0078EDF6 /* env.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F38455F2092163D0078EDF6 /* env.h */; };
-		4F38456F2092163D0078EDF6 /* status.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845602092163D0078EDF6 /* status.h */; };
-		4F3845702092163D0078EDF6 /* db.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845612092163D0078EDF6 /* db.h */; };
-		4F3845712092163D0078EDF6 /* slice.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845622092163D0078EDF6 /* slice.h */; };
-		4F3845722092163D0078EDF6 /* cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845632092163D0078EDF6 /* cache.h */; };
-		4F3845732092163D0078EDF6 /* write_batch.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845642092163D0078EDF6 /* write_batch.h */; };
-		4F3845742092163D0078EDF6 /* options.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845652092163D0078EDF6 /* options.h */; };
-		4F3845752092163D0078EDF6 /* dumpfile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845662092163D0078EDF6 /* dumpfile.h */; };
-		4F3845762092163D0078EDF6 /* c.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845672092163D0078EDF6 /* c.h */; };
-		4F3845772092163D0078EDF6 /* filter_policy.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845682092163D0078EDF6 /* filter_policy.h */; };
-		4F3845782092163D0078EDF6 /* comparator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3845692092163D0078EDF6 /* comparator.h */; };
-		4F3845792092163D0078EDF6 /* table.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F38456A2092163D0078EDF6 /* table.h */; };
-		4F38457A2092163D0078EDF6 /* table_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F38456B2092163D0078EDF6 /* table_builder.h */; };
-		4F38457B2092163D0078EDF6 /* iterator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F38456C2092163D0078EDF6 /* iterator.h */; };
-		4F38457C2092163D0078EDF6 /* libleveldb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F38456D2092163D0078EDF6 /* libleveldb.a */; };
 		4F38457E209216BC0078EDF6 /* BlockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38457D209216BC0078EDF6 /* BlockStore.swift */; };
 		4F38458020921D120078EDF6 /* HeaderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38457F20921D120078EDF6 /* HeaderStore.swift */; };
 		4F38458220921DC30078EDF6 /* GetBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38458120921DC30078EDF6 /* GetBlocks.swift */; };
@@ -90,6 +75,7 @@
 		4F58166F2084F6FB00939306 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58166E2084F6FB00939306 /* Script.swift */; };
 		4F5816712084F7B900939306 /* OPCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5816702084F7B900939306 /* OPCodes.swift */; };
 		4F5816762085188400939306 /* TransactionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5816752085188400939306 /* TransactionSpec.swift */; };
+		4F77C46720AA214300EA4A8C /* TransactionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F77C46620AA214300EA4A8C /* TransactionHandler.swift */; };
 		4F84E5CA206E9B13001CD456 /* PaymentURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F84E5C9206E9B13001CD456 /* PaymentURI.swift */; };
 		4F8FC8EB209D0EB60007FA1F /* GetAddr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8FC8EA209D0EB60007FA1F /* GetAddr.swift */; };
 		4F8FC8ED209D15580007FA1F /* AddrHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8FC8EC209D15580007FA1F /* AddrHandler.swift */; };
@@ -123,6 +109,7 @@
 		4FC4ED1D208EE07800A7E848 /* Pong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC4ED1C208EE07800A7E848 /* Pong.swift */; };
 		4FC4ED1F208F5F6F00A7E848 /* Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC4ED1E208F5F6F00A7E848 /* Ping.swift */; };
 		4FC4ED23208F634900A7E848 /* SmsgPong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC4ED22208F634900A7E848 /* SmsgPong.swift */; };
+		4FED4ABC20AA15660094B2CD /* leveldb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FED4ABB20AA15660094B2CD /* leveldb.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -188,21 +175,6 @@
 		4F328721208FFB4400CCCDC4 /* GetHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetHeaders.swift; sourceTree = "<group>"; };
 		4F384559209215AB0078EDF6 /* Store.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Store.mm; sourceTree = "<group>"; };
 		4F38455B209215BD0078EDF6 /* Store.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Store.h; sourceTree = "<group>"; };
-		4F38455F2092163D0078EDF6 /* env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = env.h; sourceTree = "<group>"; };
-		4F3845602092163D0078EDF6 /* status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = status.h; sourceTree = "<group>"; };
-		4F3845612092163D0078EDF6 /* db.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = db.h; sourceTree = "<group>"; };
-		4F3845622092163D0078EDF6 /* slice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slice.h; sourceTree = "<group>"; };
-		4F3845632092163D0078EDF6 /* cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cache.h; sourceTree = "<group>"; };
-		4F3845642092163D0078EDF6 /* write_batch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = write_batch.h; sourceTree = "<group>"; };
-		4F3845652092163D0078EDF6 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
-		4F3845662092163D0078EDF6 /* dumpfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dumpfile.h; sourceTree = "<group>"; };
-		4F3845672092163D0078EDF6 /* c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = c.h; sourceTree = "<group>"; };
-		4F3845682092163D0078EDF6 /* filter_policy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filter_policy.h; sourceTree = "<group>"; };
-		4F3845692092163D0078EDF6 /* comparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comparator.h; sourceTree = "<group>"; };
-		4F38456A2092163D0078EDF6 /* table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = table.h; sourceTree = "<group>"; };
-		4F38456B2092163D0078EDF6 /* table_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = table_builder.h; sourceTree = "<group>"; };
-		4F38456C2092163D0078EDF6 /* iterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iterator.h; sourceTree = "<group>"; };
-		4F38456D2092163D0078EDF6 /* libleveldb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libleveldb.a; sourceTree = "<group>"; };
 		4F38457D209216BC0078EDF6 /* BlockStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStore.swift; sourceTree = "<group>"; };
 		4F38457F20921D120078EDF6 /* HeaderStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStore.swift; sourceTree = "<group>"; };
 		4F38458120921DC30078EDF6 /* GetBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBlocks.swift; sourceTree = "<group>"; };
@@ -225,6 +197,7 @@
 		4F58166E2084F6FB00939306 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
 		4F5816702084F7B900939306 /* OPCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPCodes.swift; sourceTree = "<group>"; };
 		4F5816752085188400939306 /* TransactionSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSpec.swift; sourceTree = "<group>"; };
+		4F77C46620AA214300EA4A8C /* TransactionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHandler.swift; sourceTree = "<group>"; };
 		4F84E5C9206E9B13001CD456 /* PaymentURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentURI.swift; sourceTree = "<group>"; };
 		4F8FC8E8209D05FE0007FA1F /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		4F8FC8EA209D0EB60007FA1F /* GetAddr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAddr.swift; sourceTree = "<group>"; };
@@ -262,6 +235,8 @@
 		4FC4ED1C208EE07800A7E848 /* Pong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pong.swift; sourceTree = "<group>"; };
 		4FC4ED1E208F5F6F00A7E848 /* Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ping.swift; sourceTree = "<group>"; };
 		4FC4ED22208F634900A7E848 /* SmsgPong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmsgPong.swift; sourceTree = "<group>"; };
+		4FED4ABB20AA15660094B2CD /* leveldb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = leveldb.framework; path = Frameworks/leveldb.framework; sourceTree = "<group>"; };
+		4FED4ABE20AA15840094B2CD /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,10 +244,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F38457C2092163D0078EDF6 /* libleveldb.a in Frameworks */,
 				4F1D9D73206819D50065E3EF /* CommonCrypto.framework in Frameworks */,
 				4F2CAB772069329E0016B62F /* secp256k1.framework in Frameworks */,
 				4F1D9D70206819D50065E3EF /* Crypto.framework in Frameworks */,
+				4FED4ABC20AA15660094B2CD /* leveldb.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +298,7 @@
 		4F1D9D2B206818BC0065E3EF /* CoinKit */ = {
 			isa = PBXGroup;
 			children = (
+				4FED4ABD20AA15710094B2CD /* LevelDB */,
 				4F8FC8F0209D1E160007FA1F /* Protocols */,
 				4F384557209214EE0078EDF6 /* Stores */,
 				4F3D757E2090FF43005A9091 /* Hashing */,
@@ -414,6 +390,7 @@
 		4F1D9D6B206819C20065E3EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FED4ABB20AA15660094B2CD /* leveldb.framework */,
 				4F2CAB762069329E0016B62F /* secp256k1.framework */,
 				4F1D9D6F206819D50065E3EF /* CommonCrypto.framework */,
 				4F1D9D6C206819D40065E3EF /* Crypto.framework */,
@@ -474,7 +451,6 @@
 		4F384557209214EE0078EDF6 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
-				4F38455C2092163D0078EDF6 /* leveldb */,
 				4F384559209215AB0078EDF6 /* Store.mm */,
 				4F38455B209215BD0078EDF6 /* Store.h */,
 				4F38457D209216BC0078EDF6 /* BlockStore.swift */,
@@ -482,45 +458,6 @@
 				4F8FC8E8209D05FE0007FA1F /* Store.swift */,
 			);
 			path = Stores;
-			sourceTree = "<group>";
-		};
-		4F38455C2092163D0078EDF6 /* leveldb */ = {
-			isa = PBXGroup;
-			children = (
-				4F38455D2092163D0078EDF6 /* include */,
-				4F38456D2092163D0078EDF6 /* libleveldb.a */,
-			);
-			name = leveldb;
-			path = Frameworks/leveldb;
-			sourceTree = SOURCE_ROOT;
-		};
-		4F38455D2092163D0078EDF6 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				4F38455E2092163D0078EDF6 /* leveldb */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		4F38455E2092163D0078EDF6 /* leveldb */ = {
-			isa = PBXGroup;
-			children = (
-				4F38455F2092163D0078EDF6 /* env.h */,
-				4F3845602092163D0078EDF6 /* status.h */,
-				4F3845612092163D0078EDF6 /* db.h */,
-				4F3845622092163D0078EDF6 /* slice.h */,
-				4F3845632092163D0078EDF6 /* cache.h */,
-				4F3845642092163D0078EDF6 /* write_batch.h */,
-				4F3845652092163D0078EDF6 /* options.h */,
-				4F3845662092163D0078EDF6 /* dumpfile.h */,
-				4F3845672092163D0078EDF6 /* c.h */,
-				4F3845682092163D0078EDF6 /* filter_policy.h */,
-				4F3845692092163D0078EDF6 /* comparator.h */,
-				4F38456A2092163D0078EDF6 /* table.h */,
-				4F38456B2092163D0078EDF6 /* table_builder.h */,
-				4F38456C2092163D0078EDF6 /* iterator.h */,
-			);
-			path = leveldb;
 			sourceTree = "<group>";
 		};
 		4F3D757E2090FF43005A9091 /* Hashing */ = {
@@ -658,8 +595,17 @@
 				4F38458420921E830078EDF6 /* BlockHandler.swift */,
 				4F4BE4DC20965FC600F484AC /* InventoryHandler.swift */,
 				4F8FC8EC209D15580007FA1F /* AddrHandler.swift */,
+				4F77C46620AA214300EA4A8C /* TransactionHandler.swift */,
 			);
 			path = Handlers;
+			sourceTree = "<group>";
+		};
+		4FED4ABD20AA15710094B2CD /* LevelDB */ = {
+			isa = PBXGroup;
+			children = (
+				4FED4ABE20AA15840094B2CD /* module.modulemap */,
+			);
+			path = LevelDB;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -669,23 +615,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F38456E2092163D0078EDF6 /* env.h in Headers */,
-				4F3845702092163D0078EDF6 /* db.h in Headers */,
 				4F3D75852090FFD6005A9091 /* neoscrypt.h in Headers */,
-				4F3845792092163D0078EDF6 /* table.h in Headers */,
-				4F3845712092163D0078EDF6 /* slice.h in Headers */,
-				4F38456F2092163D0078EDF6 /* status.h in Headers */,
-				4F3845722092163D0078EDF6 /* cache.h in Headers */,
-				4F3845752092163D0078EDF6 /* dumpfile.h in Headers */,
 				4F4BE4DA2094E1C300F484AC /* Store.h in Headers */,
-				4F38457A2092163D0078EDF6 /* table_builder.h in Headers */,
 				4F1D9D3A206818BC0065E3EF /* CoinKit.h in Headers */,
-				4F38457B2092163D0078EDF6 /* iterator.h in Headers */,
-				4F3845762092163D0078EDF6 /* c.h in Headers */,
-				4F3845742092163D0078EDF6 /* options.h in Headers */,
-				4F3845772092163D0078EDF6 /* filter_policy.h in Headers */,
-				4F3845782092163D0078EDF6 /* comparator.h in Headers */,
-				4F3845732092163D0078EDF6 /* write_batch.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -857,6 +789,7 @@
 				4FA1E61F208D835600816CE2 /* P2PNetwork.swift in Sources */,
 				4F997105209FB840001E8191 /* ChainItem.swift in Sources */,
 				4F3D758820910035005A9091 /* NeoScrypt.swift in Sources */,
+				4F77C46720AA214300EA4A8C /* TransactionHandler.swift in Sources */,
 				4F3D75862090FFD6005A9091 /* neoscrypt.c in Sources */,
 				4F3D757B2090CAD6005A9091 /* HeaderHandler.swift in Sources */,
 				4F13EB8F20926483005F927A /* Transaction.swift in Sources */,
@@ -1033,20 +966,16 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks/secp256k1.framework",
-					"$(SRCROOT)/Frameworks/leveldb/include",
+					"$(SRCROOT)/Frameworks/leveldb.framework",
 				);
 				INFOPLIST_FILE = CoinKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks/leveldb",
-				);
-				OTHER_LDFLAGS = "-lleveldb";
 				PRODUCT_BUNDLE_IDENTIFIER = com.elliottminns.CoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CoinKit/Secp256k1";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CoinKit/Secp256k1 $(SRCROOT)/CoinKit/LevelDB";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1071,20 +1000,16 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks/secp256k1.framework",
-					"$(SRCROOT)/Frameworks/leveldb/include",
+					"$(SRCROOT)/Frameworks/leveldb.framework",
 				);
 				INFOPLIST_FILE = CoinKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks/leveldb",
-				);
-				OTHER_LDFLAGS = "-lleveldb";
 				PRODUCT_BUNDLE_IDENTIFIER = com.elliottminns.CoinKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CoinKit/Secp256k1";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CoinKit/Secp256k1 $(SRCROOT)/CoinKit/LevelDB";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

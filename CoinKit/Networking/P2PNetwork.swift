@@ -101,6 +101,24 @@ public class P2PNetwork<T: Block> {
   public func createBlockStream() {
   }
   
+  public func get(transactions hashes: [Data], peer: Peer? = nil, callback: @escaping(Result<[T.TransactionType]>) -> ()) {
+    let p = peer ?? peers.random()
+    
+    p.get(transactions: hashes) { (result: Result<[T.TransactionType]>, peer: Peer) in
+      DispatchQueue.main.async {
+        switch result {
+        case .failure(let error):
+          if let e = error as? Peer.Error, e == .timeout {
+            self.get(transactions: hashes, peer: peer, callback: callback)
+          } else {
+            callback(.failure(error))
+          }
+        case .success(let transactions): callback(.success(transactions))
+        }
+      }
+    }
+  }
+  
   public func getHeaders(locators: [Data], stop: Data? = nil, callback: @escaping(Result<[BlockHeader]>) -> ()) {
     waitForConnection {
       var called: Bool = false
@@ -172,11 +190,6 @@ public class P2PNetwork<T: Block> {
   public func getAddresses() {
     let peer = peers.random()
     peer.getAddresses()
-  }
-  
-  public func get(transactions: [String], callback: @escaping () -> Void) {
-    let peer = peers.random()
-    peer.get(transactions: transactions, callback: callback)
   }
   
   public func close() {

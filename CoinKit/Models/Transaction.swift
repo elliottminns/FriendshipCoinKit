@@ -29,7 +29,10 @@ public protocol Transaction {
   init(version: UInt32, timestamp: UInt32, locktime: UInt32, inputs: [Input], outputs: [TransactionOutput])
   
   func hashForSignature(index: Int, prevOutScript: Data, hashType: UInt8) throws -> Data
+  
   func toData() -> Data
+  
+  init(data: Data) throws
 }
 
 public extension Transaction {

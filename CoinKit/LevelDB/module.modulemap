@@ -1,0 +1,5 @@
+module leveldb [system] {
+  header "../../Frameworks/leveldb.framework/Headers/db.h"
+  header "../../Frameworks/leveldb.framework/Headers/write_batch.h"
+  export *
+}

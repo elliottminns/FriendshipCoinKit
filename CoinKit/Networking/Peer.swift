@@ -90,16 +90,31 @@ public class Peer {
                                   onTimeout: onTimeout)
     handlers.insert(peerHandler)
   }
-  
+  /*
   public func get(block hash: String, callback: @escaping () -> Void) {
     let command = CommandType.GetData(inventory: [
       InventoryItem(type: .msgBlock, hash: hash)
       ])
     send(command: command)
+  }*/
+  
+  /**
+   * @title Gets the transactions by the TXIDs.
+   *
+   *
+   */
+  public func get<W: Transaction>(transactions hashes: [Data], callback: @escaping (Result<[W]>, Peer) -> Void) {
+    let items = hashes.map { InventoryItem(type: .msgTx, hash: $0) }
+    let command = CommandType.GetData(inventory: items)
+    let handler = TransactionHandler(hashes: hashes, callback: callback)
+    add(handler: handler) { (peer) in
+      callback(.failure(Peer.Error.timeout), peer)
+    }
+    send(command: command)
   }
   
   public func get<T: Block>(blocks hashes: [Data], callback: @escaping (Result<[T]>, Peer) -> Void) {
-    let items = hashes.map { InventoryItem(type: .msgBlock, hash: $0)}
+    let items = hashes.map { InventoryItem(type: .msgBlock, hash: $0) }
     let command = CommandType.GetData(inventory: items)
     
     let handler = BlockHandler(hashes: hashes, hashingAlgorithm: self.params.hashingAlgorithm, callback: callback)
@@ -120,15 +135,6 @@ public class Peer {
       callback(.failure(Peer.Error.timeout), peer)
     }
     send(command: command)
-  }
-  
-  /**
-   * Gets the transactions by the TXIDs.
-   *
-   *
-   */
-  public func get(transactions: [String], callback: @escaping () -> Void) {
-    
   }
   
   public func getAddresses() {
