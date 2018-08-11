@@ -8,11 +8,11 @@
 
 import Foundation
 
-protocol Timestamped {
+public protocol Timestamped {
   var timestamp: UInt32 { get }
 }
 extension Timestamped {
-  var date: Date {
+  public var date: Date {
     return Date(timeIntervalSince1970: TimeInterval(timestamp))
   }
 }

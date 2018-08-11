@@ -46,6 +46,10 @@ public struct Mnemonic {
     self = try Mnemonic.generate(strength: strength, rng: rng, locale: locale)
   }
   
+  public init(seed: String) {
+    words = []
+  }
+  
   func salt(password: String? = nil) -> String {
     let pw = password ?? ""
     return "mnemonic\(pw)"

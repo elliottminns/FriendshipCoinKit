@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CommonCrypto
 
 extension Data {
   var hash160: Data {
